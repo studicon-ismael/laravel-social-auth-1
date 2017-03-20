@@ -1,0 +1,51 @@
+{
+    "name": "zfort/social-auth",
+    "type": "library",
+    "description": "Easy social auth integration with many providers",
+    "keywords": [
+        "zfort",
+        "social",
+        "auth",
+        "laravel"
+    ],
+    "homepage": "https://github.com/zfort/social-auth",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "zFort Group",
+            "email": "developer@zfort.com",
+            "homepage": "https://zfort.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "illuminate/support": "~5.1",
+        "php" : "~7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "~4.0||~5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ZFort\\SocialAuth\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ZFort\\SocialAuth\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "check-style": "phpcs -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src tests",
+        "fix-style": "phpcbf -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src tests"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
