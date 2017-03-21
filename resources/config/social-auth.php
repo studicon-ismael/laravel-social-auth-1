@@ -49,5 +49,15 @@ return [
          * The name of the foreign key to the socials table
          */
         'socials' => 'social_id'
-    ]
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication redirection
+    |--------------------------------------------------------------------------
+    |
+    | Redirect path after successful login via social network
+    |
+    */
+    'redirect' => '/home'
 ];

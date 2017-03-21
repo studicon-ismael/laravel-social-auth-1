@@ -65,6 +65,8 @@ class SocialAuthController extends BaseController
 
         $className = config('auth.providers.users.model');
 
+        $this->redirectTo = config('social-auth.redirect');
+
         $this->userModel = new $className;
     }
 
@@ -94,7 +96,6 @@ class SocialAuthController extends BaseController
      */
     public function callback(Request $request, SocialProvider $social)
     {
-
         $provider = $this->socialite->with($social->slug);
 
         $social_user = null;
@@ -166,7 +167,7 @@ class SocialAuthController extends BaseController
     protected function createNewUser(SocialProvider $social, $social_user)
     {
         $new_user = $this->userModel->create(
-            $this->userModel->mapSocialFields($social_user)
+            $this->userModel->mapSocialData($social_user)
         );
 
         $new_user->avatar = $social_user->getAvatar();

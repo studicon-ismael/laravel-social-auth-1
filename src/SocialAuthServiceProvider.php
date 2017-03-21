@@ -42,15 +42,7 @@ class SocialAuthServiceProvider extends ServiceProvider
         require $resource_folder . '/routes/routes.php';
 
         // Share social Providers for views
-        $views[] = view()->exists('vendor.social.attach')
-            ? 'vendor.social.attach'
-            : 'social-auth::attach';
-
-        $views[] = view()->exists('vendor.social.buttons')
-            ? 'vendor.social.buttons'
-            : 'social-auth::buttons';
-
-        view()->composer($views, function ($view) use ($cache) {
+        view()->composer(['social-auth::buttons', 'social-auth::attach'], function ($view) use ($cache) {
             $social_model = config('social-auth.models.social');
 
             $view->with('socialProviders', $cache->remember(

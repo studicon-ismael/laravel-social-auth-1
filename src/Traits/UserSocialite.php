@@ -29,7 +29,7 @@ trait UserSocialite
      */
     public function isAttached(string $slug): bool
     {
-        return  $this->socials()->where(['slug' => $slug])->exists();
+        return $this->socials()->where(['slug' => $slug])->exists();
     }
 
     /**
@@ -63,7 +63,7 @@ trait UserSocialite
      * @param User $social_user
      * @return array
      */
-    public function mapSocialFields(User $social_user)
+    public function mapSocialData(User $social_user)
     {
         $raw = $social_user->getRaw();
         $name = $social_user->getNickname() ?? $social_user->getName();

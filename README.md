@@ -147,7 +147,7 @@ In case if you no need any special functionality ypu can use our default control
 User model we takes from the  config('auth.users.model');
 
 ###### User Fields Mapping
-Trait UserSocial contains method mapSocialFields for mapping social fields for user model
+Trait UserSocial contains method ```mapSocialData``` for mapping social fields for user model
 If you need yuo can redefine this method for your preferences project in your UserModel 
 
 ## Change log
