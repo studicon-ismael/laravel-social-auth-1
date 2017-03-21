@@ -67,7 +67,6 @@ class SocialAuthServiceProvider extends ServiceProvider
             'social-auth'
         );
 
-        $this->app->register(\Laravel\Socialite\SocialiteServiceProvider::class);
-        $this->app->alias(\Laravel\Socialite\Facades\Socialite::class, 'Socialite');
+        $this->app->register(\SocialiteProviders\Manager\ServiceProvider::class);
     }
 }
