@@ -16,7 +16,7 @@ trait UserSocialite
      */
     public function socials()
     {
-        $social_pivot_table_name = config('social.table_names.user_has_social_provider');
+        $social_pivot_table_name = config('social-auth.table_names.user_has_social_provider');
 
         return $this->belongsToMany(SocialProvider::class, $social_pivot_table_name);
     }

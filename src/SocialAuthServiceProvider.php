@@ -2,33 +2,44 @@
 
 namespace ZFort\SocialAuth;
 
+use DateTime;
 use Illuminate\Support\ServiceProvider;
 use ZFort\SocialAuth\Console\SocialDataTablesMigrationCommand;
+use Illuminate\Contracts\Cache\Repository;
 
 class SocialAuthServiceProvider extends ServiceProvider
 {
     /**
      * Perform post-registration booting of services.
      *
+     * @param Repository $cache
      * @return void
      */
-    public function boot()
+    public function boot(Repository $cache)
     {
+        $resource_folder = __DIR__ . '/../../resources';
+
         $this->publishes([
-        __DIR__.'/../resources/config/laravel-permission.php' => $this->app->configPath().'/'.'laravel-permission.php',
+            $resource_folder . '/config/social-auth.php' => $this->app->configPath().'/'.'social-auth.php',
         ], 'config');
 
-        $resource_folder = __DIR__ . '/../../resources/';
+        if (!class_exists('CreateSocialProvidersTable')) {
+            // Publish the migration
+            $timestamp = date('Y_m_d_His', time());
+            $this->publishes([
+                __DIR__.'/../resources/migrations/create_social_providers_table.php.stub' => $this->app->databasePath().'/migrations/'.$timestamp.'_create_social_providers_table.php',
+            ], 'migrations');
+        }
 
         // Views
-        $this->loadViewsFrom($resource_folder . 'views', 'social');
+        $this->loadViewsFrom($resource_folder . '/views', 'social');
 
         $this->publishes([
-            $resource_folder . 'views' =>resource_path('views/vendor/social'),
+            $resource_folder . '/views' => resource_path('views/vendor/social'),
         ], 'views');
 
         // Routes
-        require $resource_folder . 'routes/routes.php';
+        require $resource_folder . '/routes/routes.php';
 
         // Share social Providers for views
         $views[] = view()->exists('vendor.social.attach')
@@ -39,10 +50,16 @@ class SocialAuthServiceProvider extends ServiceProvider
             ? 'vendor.social.buttons'
             : 'social::buttons';
 
-        view()->composer($views, function ($view) {
-            $social_model = config('social.models.social');
+        view()->composer($views, function ($view) use ($cache) {
+            $social_model = config('social-auth.models.social');
 
-            $view->with('socialProviders', $social_model::all());
+            $view->with('socialProviders', $cache->remember(
+                'social-providers',
+                new DateTime('1 week'),
+                function () use ($social_model) {
+                    return $social_model::all();
+                }
+            ));
         });
     }
 
@@ -59,5 +76,10 @@ class SocialAuthServiceProvider extends ServiceProvider
         });
 
         $this->commands('command.social.migrate');
+
+        $this->mergeConfigFrom(
+            __DIR__.'/../resources/config/social-auth.php',
+            'social-auth'
+        );
     }
 }
