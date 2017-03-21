@@ -14,32 +14,43 @@ class CreateSocialProvidersTable extends Migration
      */
     public function up()
     {
-
-        $config = config('social-auth.table_name');
+        $config = config('social-auth.table_names');
+        $foreign_keys = config('social-auth.foreign_keys');
+        $model_name = config('auth.providers.users.model');
 
         // Get users table name
-        $userModel = new config('auth.providers.users.model');
+        $userModel = new $model_name;
         $userTable = $userModel->getTable();
 
-        Schema::create($config('user_has_social_provider'), function (Blueprint $table) use ($userTable, $config) {
-            $table->integer('user_id')->unsigned();
-            $table->integer('social_provider_id')->unsigned();
-            $table->string('token');
-            $table->string('social_id');
-            $table->timestamp('expires_in')->nullable();
-
-            $table->foreign('user_id')
-                ->references('id')
-                ->on($userTable)
-                ->onDelete('cascade');
-
-            $table->foreign('social_provider_id')
-                ->references('id')
-                ->on($config('social_providers'))
-                ->onDelete('cascade');
-
-            $table->primary(['user_id', 'social_provider_id']);
+        Schema::create($config['social_providers'], function (Blueprint $table) use ($userTable, $config) {
+            $table->increments('id');
+            $table->string('label');
+            $table->string('slug')->unique();
+            $table->timestamps();
         });
+
+        Schema::create(
+            $config['user_has_social_provider'],
+            function (Blueprint $table) use ($userTable, $config, $foreign_keys) {
+                $table->integer($foreign_keys['users'])->unsigned();
+                $table->integer('social_provider_id')->unsigned();
+                $table->string('token');
+                $table->string($foreign_keys['socials']);
+                $table->timestamp('expires_in')->nullable();
+
+                $table->foreign($foreign_keys['users'])
+                    ->references('id')
+                    ->on($userTable)
+                    ->onDelete('cascade');
+
+                $table->foreign('social_provider_id')
+                    ->references('id')
+                    ->on($config['social_providers'])
+                    ->onDelete('cascade');
+
+                $table->primary(['user_id', 'social_provider_id']);
+            }
+        );
     }
 
     /**
@@ -49,9 +60,9 @@ class CreateSocialProvidersTable extends Migration
      */
     public function down()
     {
-        $config = config('social-auth.table_name');
+        $config = config('social-auth.table_names');
 
-        Schema::dropIfExists($config('user_has_social_provider'));
-        Schema::dropIfExists($config('social_providers'));
+        Schema::dropIfExists($config['user_has_social_provider']);
+        Schema::dropIfExists($config['social_providers']);
     }
 }
