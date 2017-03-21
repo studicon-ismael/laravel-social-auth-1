@@ -1,6 +1,10 @@
 <?php
 
-Route::group(['namespace' => 'Social\Controllers','middleware' => ['web']],
+Route::group(
+    [
+        'namespace' => 'Social\Controllers',
+        'middleware' => ['web']
+    ],
     function () {
         Route::get('social/{social}', 'SocialAuthController@getAccount')->name('social.auth');
         Route::get('social/callback/{social}', 'SocialAuthController@callback')->name('social.callback');

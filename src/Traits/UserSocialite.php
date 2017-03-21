@@ -2,8 +2,8 @@
 
 namespace ZFort\SocialAuth\Traits;
 
-use Social\Events\SocialUserAuthenticated;
-use Social\Models\SocialProvider;
+use ZFort\SocialAuth\Events\SocialUserAuthenticated;
+use ZFort\SocialAuth\Models\SocialProvider;
 use DateInterval;
 use Laravel\Socialite\Two\User;
 

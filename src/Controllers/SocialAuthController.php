@@ -2,22 +2,23 @@
 
 namespace ZFort\SocialAuth\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests;
-
-use Social\Events\SocialUserAuthenticated;
-use Social\Events\SocialUserCreated;
-use Social\Events\SocialUserDetached;
-use Social\Models\SocialProvider;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use ZFort\SocialAuth\Events\SocialUserAuthenticated;
+use ZFort\SocialAuth\Events\SocialUserCreated;
+use ZFort\SocialAuth\Events\SocialUserDetached;
+use ZFort\SocialAuth\Models\SocialProvider;
 
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
 
 use Laravel\Socialite\Contracts\Factory as Socialite;
-use Social\Exceptions\SocialGetUserInfoException;
-use Social\Exceptions\SocialUserAttachedException;
+use ZFort\SocialAuth\Exceptions\SocialGetUserInfoException;
+use ZFort\SocialAuth\Exceptions\SocialUserAttachedException;
 
 /**
  * Class SocialAuthController
@@ -25,8 +26,9 @@ use Social\Exceptions\SocialUserAttachedException;
  *
  * Provide social auth logic
  */
-class SocialAuthController extends Controller
+class SocialAuthController extends BaseController
 {
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     use RedirectsUsers;
 
     /**
@@ -128,6 +130,7 @@ class SocialAuthController extends Controller
      * @param Request $request
      * @param SocialProvider $social
      * @return array
+     * @throws SocialUserAttachedException
      */
     public function detachAccount(Request $request, SocialProvider $social)
     {
@@ -162,7 +165,6 @@ class SocialAuthController extends Controller
      */
     protected function createNewUser(SocialProvider $social, $social_user)
     {
-
         $new_user = $this->userModel->create(
             $this->userModel->mapSocialFields($social_user)
         );
@@ -189,13 +191,13 @@ class SocialAuthController extends Controller
      */
     protected function register(Request $request, SocialProvider $social, $social_user)
     {
-
         //Checks by socialProvider identifier if user exists
         $exist_user = $this->getUserByKey($social, $social_user->getId());
 
         //Checks if user exists with current socialProvider identifier, auth if does
         if ($exist_user) {
             $this->login($exist_user);
+
             return redirect($this->redirectPath());
         }
 
@@ -203,16 +205,22 @@ class SocialAuthController extends Controller
         $exist_user = $this->userModel->where('email', $social_user->getEmail())->first();
         if ($exist_user) {
             $this->login($exist_user);
+
             return $this->attach($request, $social, $social_user);
         }
 
         //If account for current socialProvider data doesn't exist - create new one
         $new_user = $this->createNewUser($social, $social_user);
         $this->login($new_user);
+
         return redirect($this->redirectPath());
     }
 
-
+    /**
+     * Login user
+     *
+     * @param $user
+     */
     protected function login($user)
     {
         $this->auth->login($user);
@@ -233,6 +241,7 @@ class SocialAuthController extends Controller
             $social_user->token,
             $social_user->expiresIn
         );
+
         return redirect($this->redirectPath());
     }
 }

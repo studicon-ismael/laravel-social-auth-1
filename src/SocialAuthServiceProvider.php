@@ -4,7 +4,6 @@ namespace ZFort\SocialAuth;
 
 use DateTime;
 use Illuminate\Support\ServiceProvider;
-use ZFort\SocialAuth\Console\SocialDataTablesMigrationCommand;
 use Illuminate\Contracts\Cache\Repository;
 
 class SocialAuthServiceProvider extends ServiceProvider
@@ -70,13 +69,6 @@ class SocialAuthServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // register command for migration to version 2.0
-        $this->app->singleton('command.social.migrate', function ($app) {
-            return new SocialDataTablesMigrationCommand();
-        });
-
-        $this->commands('command.social.migrate');
-
         $this->mergeConfigFrom(
             __DIR__.'/../resources/config/social-auth.php',
             'social-auth'
