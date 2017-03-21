@@ -1,6 +1,5 @@
 <?php
 
-
 return [
 
     'models' => [
@@ -33,11 +32,22 @@ return [
         | Social Providers Table
         |--------------------------------------------------------------------------
         |
-        | The table that your save all social network which ypur applicatio use.
+        | The table that your save all social network which your application use.
         |
         */
         'social_providers' => 'social_providers'
+    ],
 
+    'foreign_keys' => [
+
+        /*
+         * The name of the foreign key to the users table.
+         */
+        'users' => 'user_id',
+
+        /*
+         * The name of the foreign key to the socials table
+         */
+        'socials' => 'social_id'
     ]
-
 ];
