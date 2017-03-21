@@ -62,21 +62,26 @@ You can publish the config-file with:
 $ php artisan vendor:publish --provider="ZFort\SocialAuth\SocialAuthServiceProvider" --tag="config"
 ```
 
+Also you can publish and modify view templates with:
+```bash
+$ php artisan vendor:publish --provider="ZFort\SocialAuth\SocialAuthServiceProvider" --tag="views"
+```
+
 ##### Add credetials to your project
 
 File .env
 ```ini
 FB_ID = <FacebookID>
 FB_SECRET = <FacebookSecret>
-FB_REDIRECT = <your domain>/social/callback/facebook
+FB_REDIRECT = <your.domain>/social/callback/facebook
 
 GOOGLE_ID = <GoogleID>
 GOOGLE_SECRET = <GoogleSecret>
-GOOGLE_REDIRECT = <your domain>/social/callback/google
+GOOGLE_REDIRECT = <your.domain>/social/callback/google
 
 GITHUB_ID = <GithubID>
 GITHUB_SECRET = <GithubSecret>
-GITHUB_REDIRECT = <your domain>/social/callback/github
+GITHUB_REDIRECT = <your.domain>/social/callback/github
 ```
 
 ##### File config/services.php

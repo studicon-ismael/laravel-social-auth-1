@@ -71,8 +71,8 @@ trait UserSocialite
 
         $result = [
             'email' => $social_user->getEmail(),
-            'first_name' => $name,
-            'verified' => isset($raw['verified']) ? $raw['verified'] : true,
+            'name' => $name,
+            'verified' => $raw['verified'] ?? true,
             'token' => $social_user->token,
             'avatar' => $social_user->getAvatar(),
             'expiresIn' => $social_user->expiresIn

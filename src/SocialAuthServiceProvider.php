@@ -31,6 +31,7 @@ class SocialAuthServiceProvider extends ServiceProvider
         }
 
         // Views
+        $this->loadViewsFrom(resource_path('views/vendor/social'), 'social-auth');
         $this->loadViewsFrom($resource_folder . '/views', 'social-auth');
 
         $this->publishes([
@@ -73,5 +74,8 @@ class SocialAuthServiceProvider extends ServiceProvider
             __DIR__.'/../resources/config/social-auth.php',
             'social-auth'
         );
+
+        $this->app->register(\Laravel\Socialite\SocialiteServiceProvider::class);
+        $this->app->alias(\Laravel\Socialite\Facades\Socialite::class, 'Socialite');
     }
 }

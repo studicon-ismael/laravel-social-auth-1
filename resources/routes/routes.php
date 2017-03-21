@@ -2,7 +2,7 @@
 
 Route::group(
     [
-        'namespace' => 'Social\Controllers',
+        'namespace' => 'ZFort\SocialAuth\Controllers',
         'middleware' => ['web']
     ],
     function () {
