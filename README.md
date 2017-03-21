@@ -35,32 +35,51 @@ Via Composer
 ``` bash
 $ composer require zfort/social-auth
 ```
-Full documentation here [Bitbucket repository](https://bibucket.org).
+
+Now add the service provider in config/app.php file:
+```php
+'providers' => [
+    // ...
+    ZFort\SocialAuth\SocialAuthServiceProvider::class,
+];
+```
+
+You can publish the migration with:
+```bash
+$ php artisan vendor:publish --provider="ZFort\SocialAuth\SocialAuthServiceProvider" --tag="migrations"
+```
+
+The package assumes that your users table name is called "users". If this is not the case you should manually edit the published migration to use your custom table name.
+
+After the migration has been published you can create the social_providers table for storing supported 
+providers and social_user pivot table by running the migrations:
+```bash
+$ php artisan migrate
+```
+
+You can publish the config-file with:
+```bash
+$ php artisan vendor:publish --provider="ZFort\SocialAuth\SocialAuthServiceProvider" --tag="config"
+```
 
 ##### Add credetials to your project
 
 File .env
 ```ini
+FB_ID = <FacebookID>
+FB_SECRET = <FacebookSecret>
+FB_REDIRECT = <your domain>/social/callback/facebook
 
-FB_ID =<FacebookID>
-FB_SECRET =<FacebookSecret>
-FB_REDIRECT =<your domain>/social/handle/facebook
+GOOGLE_ID = <GoogleID>
+GOOGLE_SECRET = <GoogleSecret>
+GOOGLE_REDIRECT = <your domain>/social/callback/google
 
-TW_ID =<TwitterID>
-TW_SECRET =<TwitterSecret>
-TW_REDIRECT =<your domain>/social/handle/twitter
-
-GOOGLE_ID =<GoogleID>
-GOOGLE_SECRET =<GoogleSecret>
-GOOGLE_REDIRECT =<your domain>/social/handle/google
-
-GITHUB_ID =<GithubID>
-GITHUB_SECRET =<GithubSecret>
-GITHUB_REDIRECT =<your domain>/social/handle/github
-
+GITHUB_ID = <GithubID>
+GITHUB_SECRET = <GithubSecret>
+GITHUB_REDIRECT = <your domain>/social/callback/github
 ```
 
-#####File config/services.php
+##### File config/services.php
 ```ini
     'facebook' => [
         'client_id'     => env('FB_ID'),
@@ -68,17 +87,12 @@ GITHUB_REDIRECT =<your domain>/social/handle/github
         'redirect'      => env('FB_REDIRECT')
     ],
 
-    'twitter' => [
-        'client_id'     => env('TW_ID'),
-        'client_secret' => env('TW_SECRET'),
-        'redirect'      => env('TW_REDIRECT')
-    ],
-
     'google' => [
         'client_id'     => env('GOOGLE_ID'),
         'client_secret' => env('GOOGLE_SECRET'),
         'redirect'      => env('GOOGLE_REDIRECT')
     ],
+    
     'github' => [
         'client_id'     => env('GITHUB_ID'),
         'client_secret' => env('GITHUB_SECRET'),
@@ -86,26 +100,27 @@ GITHUB_REDIRECT =<your domain>/social/handle/github
     ]
 ```
 
-#####Include social buttons to your templates
+##### Include social buttons into your templates
 ```php
- <p class="or-social">Or Use Social Login</p>
-
+ @include('social-auth::attach') // for authenticated user to attach another socials
+ @include('social-auth::buttons') // for guests to login via
+ // or for published views
  @include('vendor.social.buttons')
+ @include('vendor.social.attach')
 ```
 
-#####Add UserSocialite trait to your User model
+##### Add UserSocialite trait to your User model
 ```php
+namespace App\Models;
 
-use Social\Traits\UserSocialite;
+use Illuminate\Database\Eloquent\Model;
+use ZFort\SocialAuth\Traits\UserSocialite;
 
-class User { ...
-
-use  UserSocialite;
-.
-.
-.
+class User extends Model
+{
+    use UserSocialite;
+   ...
 }
-
 ```
 ##### Routes
 
@@ -119,26 +134,16 @@ Route::get('social/callback/{social}', 'Auth\SocialAuthController@callback');
 Route::get('social/unlink/{social}', 'SocialAuthController@deleteAccount');
 ```
 
-
 In case if you no need any special functionality ypu can use our default controllers
 
-##### Migrations & Seeds
-
-Run migration and seed.
-```php
-php artisan Social:migrate
-php artisan Social:seed
-
-```
- 
 ##### Customize for your project
 
 ###### Custom User Model
 User model we takes from the  config('auth.users.model');
 
 ###### User Fields Mapping
-Trait UserSocial contains method mapSocialFields for mapping cisoal fields for user model
-If you need yuo can redefine this method for ypur project in your UserModel 
+Trait UserSocial contains method mapSocialFields for mapping social fields for user model
+If you need yuo can redefine this method for your preferences project in your UserModel 
 
 ## Change log
 

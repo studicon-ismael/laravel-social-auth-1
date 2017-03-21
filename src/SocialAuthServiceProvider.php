@@ -31,7 +31,7 @@ class SocialAuthServiceProvider extends ServiceProvider
         }
 
         // Views
-        $this->loadViewsFrom($resource_folder . '/views', 'social');
+        $this->loadViewsFrom($resource_folder . '/views', 'social-auth');
 
         $this->publishes([
             $resource_folder . '/views' => resource_path('views/vendor/social'),
@@ -43,11 +43,11 @@ class SocialAuthServiceProvider extends ServiceProvider
         // Share social Providers for views
         $views[] = view()->exists('vendor.social.attach')
             ? 'vendor.social.attach'
-            : 'social::attach';
+            : 'social-auth::attach';
 
         $views[] = view()->exists('vendor.social.buttons')
             ? 'vendor.social.buttons'
-            : 'social::buttons';
+            : 'social-auth::buttons';
 
         view()->composer($views, function ($view) use ($cache) {
             $social_model = config('social-auth.models.social');
