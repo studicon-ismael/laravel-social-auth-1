@@ -1,7 +1,6 @@
 <?php
 
-namespace Social\Events;
-
+namespace ZFort\SocialAuth\Events;
 
 class SocialUserAttached extends SocialEvent
 {

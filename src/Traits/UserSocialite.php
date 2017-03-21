@@ -1,6 +1,6 @@
 <?php
 
-namespace Social\Traits;
+namespace ZFort\SocialAuth\Traits;
 
 use Social\Events\SocialUserAuthenticated;
 use Social\Models\SocialProvider;

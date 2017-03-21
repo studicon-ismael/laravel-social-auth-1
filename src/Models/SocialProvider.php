@@ -1,6 +1,6 @@
 <?php
 
-namespace Social\Models;
+namespace ZFort\SocialAuth\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

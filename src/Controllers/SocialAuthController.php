@@ -1,7 +1,6 @@
 <?php
 
-namespace Social\Controllers;
-
+namespace ZFort\SocialAuth\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;

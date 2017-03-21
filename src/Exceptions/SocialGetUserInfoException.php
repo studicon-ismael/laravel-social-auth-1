@@ -1,6 +1,6 @@
 <?php
 
-namespace Social\Exceptions;
+namespace ZFort\SocialAuth\Exceptions;
 
 use Exception;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Social\Events;
+namespace ZFort\SocialAuth\Events;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 
