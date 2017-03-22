@@ -17,4 +17,3 @@ class SocialUserAuthenticated extends SocialEvent
         $this->user = $user;
     }
 }
-
