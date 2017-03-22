@@ -5,6 +5,7 @@ namespace ZFort\SocialAuth\Controllers;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use ZFort\SocialAuth\Events\SocialUserAttached;
 use ZFort\SocialAuth\Events\SocialUserAuthenticated;
 use ZFort\SocialAuth\Events\SocialUserCreated;
 use ZFort\SocialAuth\Events\SocialUserDetached;
@@ -257,6 +258,8 @@ class SocialAuthController extends BaseController
             $socialUser->expiresIn
         );
 
+        event(new SocialUserAttached($request->user(), $social, $socialUser));
+
         return redirect($this->redirectPath());
     }
 
@@ -267,6 +270,6 @@ class SocialAuthController extends BaseController
      */
     protected function socialUserQuery(SocialProvider $social, string $key)
     {
-        return $social->users()->wherePivot('social_id', $key);
+        return $social->users()->wherePivot(config('social-auth.foreign_keys.socials'), $key);
     }
 }
