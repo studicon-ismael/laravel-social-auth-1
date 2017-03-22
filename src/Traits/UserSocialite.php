@@ -5,7 +5,7 @@ namespace ZFort\SocialAuth\Traits;
 use ZFort\SocialAuth\Events\SocialUserAuthenticated;
 use ZFort\SocialAuth\Models\SocialProvider;
 use DateInterval;
-use Laravel\Socialite\Two\User;
+use Laravel\Socialite\Contracts\User;
 
 trait UserSocialite
 {
@@ -60,22 +60,22 @@ trait UserSocialite
     }
 
     /**
-     * @param User $social_user
+     * @param User $socialUser
      * @return array
      */
-    public function mapSocialData(User $social_user)
+    public function mapSocialData(User $socialUser)
     {
-        $raw = $social_user->getRaw();
-        $name = $social_user->getName() ?? $social_user->getNickname();
-        $name = $name ?? $social_user->getEmail();
+        $raw = $socialUser->getRaw();
+        $name = $socialUser->getName() ?? $socialUser->getNickname();
+        $name = $name ?? $socialUser->getEmail();
 
         $result = [
-            'email' => $social_user->getEmail(),
+            'email' => $socialUser->getEmail(),
             'name' => $name,
             'verified' => $raw['verified'] ?? true,
-            'token' => $social_user->token,
-            'avatar' => $social_user->getAvatar(),
-            'expiresIn' => $social_user->expiresIn
+            'token' => $socialUser->token,
+            'avatar' => $socialUser->getAvatar(),
+            'expiresIn' => $socialUser->expiresIn
         ];
 
         return $result;
