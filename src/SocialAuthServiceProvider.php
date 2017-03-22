@@ -2,7 +2,6 @@
 
 namespace ZFort\SocialAuth;
 
-use DateTime;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Cache\Repository;
 
@@ -12,9 +11,10 @@ class SocialAuthServiceProvider extends ServiceProvider
      * Perform post-registration booting of services.
      *
      * @param Repository $cache
+     * @param SocialProvidersLoader $loader
      * @return void
      */
-    public function boot(Repository $cache)
+    public function boot(Repository $cache, SocialProvidersLoader $loader)
     {
         $resource_folder = __DIR__ . '/../resources';
 
@@ -42,17 +42,13 @@ class SocialAuthServiceProvider extends ServiceProvider
         require $resource_folder . '/routes/routes.php';
 
         // Share social Providers for views
-        view()->composer(['social-auth::buttons', 'social-auth::attach'], function ($view) use ($cache) {
-            $social_model = config('social-auth.models.social');
-
-            $view->with('socialProviders', $cache->remember(
-                'social-providers',
-                new DateTime('1 week'),
-                function () use ($social_model) {
-                    return $social_model::all();
-                }
-            ));
+        view()->composer(['social-auth::buttons', 'social-auth::attach'], function ($view) use ($loader) {
+            $view->with('socialProviders', $loader->getSocialProviders());
         });
+
+        $loader->registerSocialProviders();
+
+        $this->app->register(\SocialiteProviders\Manager\ServiceProvider::class);
     }
 
     /**
@@ -66,8 +62,5 @@ class SocialAuthServiceProvider extends ServiceProvider
             __DIR__.'/../resources/config/social-auth.php',
             'social-auth'
         );
-
-        $this->app->register(\Laravel\Socialite\SocialiteServiceProvider::class);
-        $this->app->alias(\Laravel\Socialite\Facades\Socialite::class, 'Socialite');
     }
 }

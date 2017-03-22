@@ -66,7 +66,7 @@ trait UserSocialite
     public function mapSocialData(User $social_user)
     {
         $raw = $social_user->getRaw();
-        $name = $social_user->getNickname() ?? $social_user->getName();
+        $name = $social_user->getName() ?? $social_user->getNickname();
         $name = $name ?? $social_user->getEmail();
 
         $result = [

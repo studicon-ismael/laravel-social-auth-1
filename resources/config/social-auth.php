@@ -2,6 +2,20 @@
 
 return [
 
+    /*
+    |--------------------------------------------------------------------------
+    | Additional service providers
+    |--------------------------------------------------------------------------
+    |
+    | The social providers listed here will enable support for additional social
+    | providers which provided by https://socialiteproviders.github.io/ just
+    | add new event listener from the installation guide
+    |
+    */
+    'providers' => [
+        //
+    ],
+
     'models' => [
         /*
          * When using the "HasRoles" trait from this package, we need to know which
@@ -11,7 +25,7 @@ return [
          * The model you want to use as a Permission model needs to implement the
          * `Spatie\Permission\Contracts\Permission` contract.
          */
-        'social' => ZFort\SocialAuth\Models\SocialProvider::class,
+        'social' => \ZFort\SocialAuth\Models\SocialProvider::class,
     ],
 
     'table_names' => [

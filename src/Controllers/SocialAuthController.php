@@ -62,11 +62,9 @@ class SocialAuthController extends BaseController
     {
         $this->auth = $auth;
         $this->socialite = $socialite;
-
-        $className = config('auth.providers.users.model');
-
         $this->redirectTo = config('social-auth.redirect');
 
+        $className = config('auth.providers.users.model');
         $this->userModel = new $className;
     }
 
@@ -117,6 +115,11 @@ class SocialAuthController extends BaseController
             return $this->register($request, $social, $social_user);
         }
 
+        //If someone already attached current socialProvider account
+        if ($this->socialUserQuery($social, $social_user->getId())->exists()) {
+            throw new SocialUserAttachedException('Somebody already attached this account', 403);
+        }
+
         // if user already attached
         if ($request->user()->isAttached($social->slug)) {
             throw new SocialUserAttachedException('User already attached ' . $social->label . ' socialProvider', 403);
@@ -155,7 +158,7 @@ class SocialAuthController extends BaseController
      */
     protected function getUserByKey(SocialProvider $social, $key)
     {
-        return $social->users()->wherePivot('social_id', $key)->first();
+        return $this->socialUserQuery($social, $key)->first();
     }
 
     /**
@@ -244,5 +247,15 @@ class SocialAuthController extends BaseController
         );
 
         return redirect($this->redirectPath());
+    }
+
+    /**
+     * @param SocialProvider $social
+     * @param $key
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    protected function socialUserQuery(SocialProvider $social, $key): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $social->users()->wherePivot('social_id', $key);
     }
 }
