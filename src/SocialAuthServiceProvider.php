@@ -3,18 +3,16 @@
 namespace ZFort\SocialAuth;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Contracts\Cache\Repository;
 
 class SocialAuthServiceProvider extends ServiceProvider
 {
     /**
      * Perform post-registration booting of services.
      *
-     * @param Repository $cache
      * @param SocialProvidersLoader $loader
      * @return void
      */
-    public function boot(Repository $cache, SocialProvidersLoader $loader)
+    public function boot(SocialProvidersLoader $loader)
     {
         $resource_folder = __DIR__ . '/../resources';
 
@@ -26,7 +24,8 @@ class SocialAuthServiceProvider extends ServiceProvider
             // Publish the migration
             $timestamp = date('Y_m_d_His', time());
             $this->publishes([
-                $resource_folder . '/database/migrations/create_social_providers_table.php.stub' => $this->app->databasePath().'/migrations/'.$timestamp.'_create_social_providers_table.php',
+                $resource_folder . '/database/migrations/create_social_providers_table.php.stub' =>
+                $this->app->databasePath().'/migrations/'.$timestamp.'_create_social_providers_table.php',
             ], 'migrations');
         }
 
@@ -43,6 +42,9 @@ class SocialAuthServiceProvider extends ServiceProvider
 
         // Share social Providers for views
         view()->composer(['social-auth::buttons', 'social-auth::attach'], function ($view) use ($loader) {
+            /**
+             * @var \Illuminate\View\View $view
+             */
             $view->with('socialProviders', $loader->getSocialProviders());
         });
 

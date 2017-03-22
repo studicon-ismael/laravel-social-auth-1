@@ -18,7 +18,9 @@ use Illuminate\Routing\Controller as BaseController;
 
 use Laravel\Socialite\Contracts\Factory as Socialite;
 use ZFort\SocialAuth\Exceptions\SocialGetUserInfoException;
-use ZFort\SocialAuth\Exceptions\SocialUserAttachedException;
+use ZFort\SocialAuth\Exceptions\SocialUserAttachException;
+use Laravel\Socialite\Contracts\User as SocialUser;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 /**
  * Class SocialAuthController
@@ -49,7 +51,7 @@ class SocialAuthController extends BaseController
     protected $socialite;
 
     /**
-     * @var object
+     * @var \Illuminate\Database\Eloquent\Model
      */
     protected $userModel;
 
@@ -74,11 +76,11 @@ class SocialAuthController extends BaseController
      *
      * @param Request $request injected by IoC container
      * @param SocialProvider $social bound by "Route model binding" feature
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function getAccount(Request $request, SocialProvider $social)
     {
-        $provider = $this->socialite->with($social->slug);
+        $provider = $this->socialite->driver($social->slug);
 
         return $provider->redirect();
     }
@@ -90,11 +92,11 @@ class SocialAuthController extends BaseController
      * @param SocialProvider $social
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      * @throws SocialGetUserInfoException
-     * @throws SocialUserAttachedException
+     * @throws SocialUserAttachException
      */
     public function callback(Request $request, SocialProvider $social)
     {
-        $provider = $this->socialite->with($social->slug);
+        $provider = $this->socialite->driver($social->slug);
 
         $social_user = null;
 
@@ -102,12 +104,12 @@ class SocialAuthController extends BaseController
         try {
             $social_user = $provider->user();
         } catch (RequestException $e) {
-            throw new SocialGetUserInfoException($e->getMessage(), 400);
+            throw new SocialGetUserInfoException($social, $e->getMessage());
         }
 
         // if we have no social info for some reason
         if (!$social_user) {
-            throw new SocialGetUserInfoException("Can`t get users data from " . $social->label, 400);
+            throw new SocialGetUserInfoException($social, 'Can\'t get users data from ' . $social->label);
         }
 
         // if user is guest
@@ -117,12 +119,18 @@ class SocialAuthController extends BaseController
 
         //If someone already attached current socialProvider account
         if ($this->socialUserQuery($social, $social_user->getId())->exists()) {
-            throw new SocialUserAttachedException('Somebody already attached this account', 403);
+            throw new SocialUserAttachException(
+                back()->withErrors('Somebody already attached this account'),
+                $social
+            );
         }
 
         // if user already attached
         if ($request->user()->isAttached($social->slug)) {
-            throw new SocialUserAttachedException('User already attached ' . $social->label . ' socialProvider', 403);
+            throw new SocialUserAttachException(
+                back()->withErrors('User already attached ' . $social->label . ' social provider'),
+                $social
+            );
         }
 
         return $this->attach($request, $social, $social_user);
@@ -134,29 +142,32 @@ class SocialAuthController extends BaseController
      * @param Request $request
      * @param SocialProvider $social
      * @return array
-     * @throws SocialUserAttachedException
+     * @throws SocialUserAttachException
      */
     public function detachAccount(Request $request, SocialProvider $social)
     {
         $result = $request->user()->socials()->detach($social->id);
 
         if (!$result) {
-            throw new SocialUserAttachedException('Error while user detached ' . $social->label . ' socialProvider', 403);
+            throw new SocialUserAttachException(
+                back()->withErrors('Error while user detached ' . $social->label . ' social provider'),
+                $social
+            );
         }
 
         event(new SocialUserDetached($request->user(), $social, $result));
 
-        return ['result' => boolval($result)];
+        return back();
     }
 
     /**
      * Gets user by unique social identifier
      *
      * @param SocialProvider $social
-     * @param integer $key
+     * @param string $key
      * @return mixed
      */
-    protected function getUserByKey(SocialProvider $social, $key)
+    protected function getUserByKey(SocialProvider $social, string $key)
     {
         return $this->socialUserQuery($social, $key)->first();
     }
@@ -165,38 +176,38 @@ class SocialAuthController extends BaseController
      * Create new system user by social user data
      *
      * @param SocialProvider $social
-     * @param $social_user
+     * @param SocialUser $socialUser
      */
-    protected function createNewUser(SocialProvider $social, $social_user)
+    protected function createNewUser(SocialProvider $social, SocialUser $socialUser)
     {
-        $new_user = $this->userModel->create(
-            $this->userModel->mapSocialData($social_user)
+        $NewUser = $this->userModel->create(
+            $this->userModel->mapSocialData($socialUser)
         );
 
-        $new_user->avatar = $social_user->getAvatar();
+        $NewUser->avatar = $socialUser->getAvatar();
 
-        $new_user->attachSocial(
+        $NewUser->attachSocial(
             $social,
-            $social_user->getId(),
-            $social_user->token,
-            $social_user->expiresIn
+            $socialUser->getId(),
+            $socialUser->token,
+            $socialUser->expiresIn
         );
 
-        event(new SocialUserCreated($new_user));
+        event(new SocialUserCreated($NewUser));
 
-        return $new_user;
+        return $NewUser;
     }
 
     /**
      * @param Request $request
      * @param SocialProvider $social
-     * @param $social_user
+     * @param SocialUser $socialUser
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    protected function register(Request $request, SocialProvider $social, $social_user)
+    protected function register(Request $request, SocialProvider $social, SocialUser $socialUser)
     {
         //Checks by socialProvider identifier if user exists
-        $exist_user = $this->getUserByKey($social, $social_user->getId());
+        $exist_user = $this->getUserByKey($social, $socialUser->getId());
 
         //Checks if user exists with current socialProvider identifier, auth if does
         if ($exist_user) {
@@ -206,15 +217,15 @@ class SocialAuthController extends BaseController
         }
 
         //Checks if account exists with socialProvider email, auth and attach current socialProvider if does
-        $exist_user = $this->userModel->where('email', $social_user->getEmail())->first();
+        $exist_user = $this->userModel->where('email', $socialUser->getEmail())->first();
         if ($exist_user) {
             $this->login($exist_user);
 
-            return $this->attach($request, $social, $social_user);
+            return $this->attach($request, $social, $socialUser);
         }
 
         //If account for current socialProvider data doesn't exist - create new one
-        $new_user = $this->createNewUser($social, $social_user);
+        $new_user = $this->createNewUser($social, $socialUser);
         $this->login($new_user);
 
         return redirect($this->redirectPath());
@@ -223,9 +234,9 @@ class SocialAuthController extends BaseController
     /**
      * Login user
      *
-     * @param $user
+     * @param Authenticatable $user
      */
-    protected function login($user)
+    protected function login(Authenticatable $user)
     {
         $this->auth->login($user);
         event(new SocialUserAuthenticated($user));
@@ -234,16 +245,16 @@ class SocialAuthController extends BaseController
     /**
      * @param Request $request
      * @param SocialProvider $social
-     * @param $social_user
+     * @param SocialUser $socialUser
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function attach(Request $request, SocialProvider $social, $social_user)
+    public function attach(Request $request, SocialProvider $social, SocialUser $socialUser)
     {
         $request->user()->attachSocial(
             $social,
-            $social_user->getId(),
-            $social_user->token,
-            $social_user->expiresIn
+            $socialUser->getId(),
+            $socialUser->token,
+            $socialUser->expiresIn
         );
 
         return redirect($this->redirectPath());
@@ -251,10 +262,10 @@ class SocialAuthController extends BaseController
 
     /**
      * @param SocialProvider $social
-     * @param $key
+     * @param string $key
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    protected function socialUserQuery(SocialProvider $social, $key): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    protected function socialUserQuery(SocialProvider $social, string $key)
     {
         return $social->users()->wherePivot('social_id', $key);
     }
