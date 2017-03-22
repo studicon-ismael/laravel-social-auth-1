@@ -52,7 +52,7 @@ class SocialAuthController extends BaseController
     protected $socialite;
 
     /**
-     * @var \Illuminate\Database\Eloquent\Model
+     * @var \ZFort\SocialAuth\Contracts\SocialAuthenticatable
      */
     protected $userModel;
 
@@ -218,7 +218,7 @@ class SocialAuthController extends BaseController
         }
 
         //Checks if account exists with socialProvider email, auth and attach current socialProvider if does
-        $exist_user = $this->userModel->where('email', $socialUser->getEmail())->first();
+        $exist_user = $this->userModel->where($this->userModel->getEmailField(), $socialUser->getEmail())->first();
         if ($exist_user) {
             $this->login($exist_user);
 
