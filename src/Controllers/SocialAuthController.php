@@ -18,7 +18,7 @@ use Illuminate\Routing\Controller as BaseController;
 
 use Laravel\Socialite\Contracts\Factory as Socialite;
 use ZFort\SocialAuth\Exceptions\SocialGetUserInfoException;
-use ZFort\SocialAuth\Exceptions\SocialUserAttachedException;
+use ZFort\SocialAuth\Exceptions\SocialUserAttachException;
 
 /**
  * Class SocialAuthController
@@ -90,7 +90,7 @@ class SocialAuthController extends BaseController
      * @param SocialProvider $social
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      * @throws SocialGetUserInfoException
-     * @throws SocialUserAttachedException
+     * @throws SocialUserAttachException
      */
     public function callback(Request $request, SocialProvider $social)
     {
@@ -102,12 +102,12 @@ class SocialAuthController extends BaseController
         try {
             $social_user = $provider->user();
         } catch (RequestException $e) {
-            throw new SocialGetUserInfoException($e->getMessage(), 400);
+            throw new SocialGetUserInfoException($social, $e->getMessage());
         }
 
         // if we have no social info for some reason
         if (!$social_user) {
-            throw new SocialGetUserInfoException("Can`t get users data from " . $social->label, 400);
+            throw new SocialGetUserInfoException($social, 'Can\'t get users data from ' . $social->label);
         }
 
         // if user is guest
@@ -117,12 +117,18 @@ class SocialAuthController extends BaseController
 
         //If someone already attached current socialProvider account
         if ($this->socialUserQuery($social, $social_user->getId())->exists()) {
-            throw new SocialUserAttachedException('Somebody already attached this account', 403);
+            throw new SocialUserAttachException(
+                back()->withErrors('Somebody already attached this account'),
+                $social
+            );
         }
 
         // if user already attached
         if ($request->user()->isAttached($social->slug)) {
-            throw new SocialUserAttachedException('User already attached ' . $social->label . ' socialProvider', 403);
+            throw new SocialUserAttachException(
+                back()->withErrors('User already attached ' . $social->label . ' social provider'),
+                $social
+            );
         }
 
         return $this->attach($request, $social, $social_user);
@@ -134,14 +140,17 @@ class SocialAuthController extends BaseController
      * @param Request $request
      * @param SocialProvider $social
      * @return array
-     * @throws SocialUserAttachedException
+     * @throws SocialUserAttachException
      */
     public function detachAccount(Request $request, SocialProvider $social)
     {
         $result = $request->user()->socials()->detach($social->id);
 
         if (!$result) {
-            throw new SocialUserAttachedException('Error while user detached ' . $social->label . ' socialProvider', 403);
+            throw new SocialUserAttachException(
+                back()->withErrors('Error while user detached ' . $social->label . ' social provider'),
+                $social
+            );
         }
 
         event(new SocialUserDetached($request->user(), $social, $result));
@@ -254,7 +263,7 @@ class SocialAuthController extends BaseController
      * @param $key
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    protected function socialUserQuery(SocialProvider $social, $key): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    protected function socialUserQuery(SocialProvider $social, $key)
     {
         return $social->users()->wherePivot('social_id', $key);
     }
