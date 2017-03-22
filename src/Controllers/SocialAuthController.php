@@ -98,27 +98,27 @@ class SocialAuthController extends BaseController
     {
         $provider = $this->socialite->driver($social->slug);
 
-        $social_user = null;
+        $SocialUser = null;
 
         // try to get user info from social network
         try {
-            $social_user = $provider->user();
+            $SocialUser = $provider->user();
         } catch (RequestException $e) {
             throw new SocialGetUserInfoException($social, $e->getMessage());
         }
 
         // if we have no social info for some reason
-        if (!$social_user) {
+        if (!$SocialUser) {
             throw new SocialGetUserInfoException($social, 'Can\'t get users data from ' . $social->label);
         }
 
         // if user is guest
         if (!$this->auth->check()) {
-            return $this->register($request, $social, $social_user);
+            return $this->register($request, $social, $SocialUser);
         }
 
         //If someone already attached current socialProvider account
-        if ($this->socialUserQuery($social, $social_user->getId())->exists()) {
+        if ($this->socialUserQuery($social, $SocialUser->getId())->exists()) {
             throw new SocialUserAttachException(
                 back()->withErrors('Somebody already attached this account'),
                 $social
@@ -133,7 +133,7 @@ class SocialAuthController extends BaseController
             );
         }
 
-        return $this->attach($request, $social, $social_user);
+        return $this->attach($request, $social, $SocialUser);
     }
 
     /**
