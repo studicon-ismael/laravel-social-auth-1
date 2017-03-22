@@ -3,6 +3,7 @@
 namespace ZFort\SocialAuth;
 
 use DateTime;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Cache\Repository;
 
@@ -12,9 +13,10 @@ class SocialAuthServiceProvider extends ServiceProvider
      * Perform post-registration booting of services.
      *
      * @param Repository $cache
+     * @param Dispatcher $dispatcher
      * @return void
      */
-    public function boot(Repository $cache)
+    public function boot(Repository $cache, Dispatcher $dispatcher)
     {
         $resource_folder = __DIR__ . '/../resources';
 
@@ -53,6 +55,13 @@ class SocialAuthServiceProvider extends ServiceProvider
                 }
             ));
         });
+
+        $dispatcher->listen(
+            \SocialiteProviders\Manager\SocialiteWasCalled::class,
+            \SocialiteProviders\VKontakte\VKontakteExtendSocialite::class . '@handle'
+        );
+
+        $this->app->register(\SocialiteProviders\Manager\ServiceProvider::class);
     }
 
     /**
@@ -66,7 +75,5 @@ class SocialAuthServiceProvider extends ServiceProvider
             __DIR__.'/../resources/config/social-auth.php',
             'social-auth'
         );
-
-        $this->app->register(\SocialiteProviders\Manager\ServiceProvider::class);
     }
 }
