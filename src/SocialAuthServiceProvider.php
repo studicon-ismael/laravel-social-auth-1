@@ -2,8 +2,6 @@
 
 namespace ZFort\SocialAuth;
 
-use DateTime;
-use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Cache\Repository;
 
@@ -13,10 +11,10 @@ class SocialAuthServiceProvider extends ServiceProvider
      * Perform post-registration booting of services.
      *
      * @param Repository $cache
-     * @param Dispatcher $dispatcher
+     * @param SocialProvidersLoader $loader
      * @return void
      */
-    public function boot(Repository $cache, Dispatcher $dispatcher)
+    public function boot(Repository $cache, SocialProvidersLoader $loader)
     {
         $resource_folder = __DIR__ . '/../resources';
 
@@ -44,22 +42,11 @@ class SocialAuthServiceProvider extends ServiceProvider
         require $resource_folder . '/routes/routes.php';
 
         // Share social Providers for views
-        view()->composer(['social-auth::buttons', 'social-auth::attach'], function ($view) use ($cache) {
-            $social_model = config('social-auth.models.social');
-
-            $view->with('socialProviders', $cache->remember(
-                'social-providers',
-                new DateTime('1 week'),
-                function () use ($social_model) {
-                    return $social_model::all();
-                }
-            ));
+        view()->composer(['social-auth::buttons', 'social-auth::attach'], function ($view) use ($loader) {
+            $view->with('socialProviders', $loader->getSocialProviders());
         });
 
-        $dispatcher->listen(
-            \SocialiteProviders\Manager\SocialiteWasCalled::class,
-            \SocialiteProviders\VKontakte\VKontakteExtendSocialite::class . '@handle'
-        );
+        $loader->registerSocialProviders();
 
         $this->app->register(\SocialiteProviders\Manager\ServiceProvider::class);
     }
