@@ -40,7 +40,7 @@ trait UserSocialite
      * @param string $token
      * @param int $expires_in
      */
-    public function attachSocial(SocialProvider $social, string $social_id, string $token, int $expires_in = null)
+    public function attachSocial($social, string $social_id, string $token, int $expires_in = null)
     {
         $data = compact('social_id', 'token');
 
@@ -79,5 +79,15 @@ trait UserSocialite
         ];
 
         return $result;
+    }
+
+    /**
+     * Get model email field name
+     *
+     * @return string
+     */
+    public function getEmailField(): string
+    {
+        return 'email';
     }
 }
