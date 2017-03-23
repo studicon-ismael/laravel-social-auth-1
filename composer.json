@@ -6,7 +6,8 @@
         "zfort",
         "social",
         "auth",
-        "laravel"
+        "laravel",
+        "socialite"
     ],
     "homepage": "https://github.com/zfort/social-auth",
     "license": "MIT",
@@ -20,7 +21,11 @@
     ],
     "require": {
         "php": "~7.0",
-        "illuminate/support": "~5.1",
+        "illuminate/support": "^5.4",
+        "illuminate/events": "^5.4",
+        "illuminate/database": "^5.4",
+        "illuminate/routing": "^5.4",
+        "illuminate/broadcasting": "^5.4",
         "socialiteproviders/manager": "~2.0 || ~3.0"
     },
     "require-dev": {
