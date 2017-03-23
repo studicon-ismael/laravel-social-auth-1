@@ -1,11 +1,17 @@
 @if ($user = Auth::user())
     @foreach($socialProviders as $provider)
-        @unless ($user->isAttached($provider->slug))
+        @if ($user->isAttached($provider->slug))
+            <a
+                    href="{{ route('social.detach', [$provider->slug]) }}"
+                    class="btn btn-lg btn-danger btn-block {{ $provider->slug }}">
+                {{ $provider->label }}
+            </a>
+        @else
             <a
                     href="{{ route('social.auth', [$provider->slug]) }}"
-                    class="btn btn-lg waves-effect waves-light btn-block {{ $provider->slug }}">
-                {{$provider->label}}
+                    class="btn btn-lg btn-success btn-block {{ $provider->slug }}">
+                {{ $provider->label }}
             </a>
-        @endunless
+        @endif
     @endforeach
 @endif
