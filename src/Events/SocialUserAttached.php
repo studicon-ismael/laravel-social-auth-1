@@ -2,7 +2,7 @@
 
 namespace ZFort\SocialAuth\Events;
 
-use Illuminate\Contracts\Auth\Authenticatable;
+use ZFort\SocialAuth\Contracts\SocialAuthenticatable as Authenticatable;
 use Laravel\Socialite\Contracts\User as SocialUser;
 
 class SocialUserAttached extends SocialEvent
