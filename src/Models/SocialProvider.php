@@ -31,11 +31,6 @@ class SocialProvider extends Model
     protected $fillable = ['slug', 'label'];
 
     /**
-     * {@inheritdoc}
-     */
-    public $timestamps = false;
-
-    /**
      * Get the route key for the model.
      *
      * @return string
