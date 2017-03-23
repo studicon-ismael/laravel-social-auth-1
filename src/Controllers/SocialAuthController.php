@@ -118,7 +118,10 @@ class SocialAuthController extends BaseController
 
         // if we have no social info for some reason
         if (!$SocialUser) {
-            throw new SocialGetUserInfoException($social, 'Can\'t get users data from ' . $social->label);
+            throw new SocialGetUserInfoException(
+                $social,
+                trans('social-auth::messages.no_user_data', ['social' => $social->label])
+            );
         }
 
         // if user is guest
@@ -126,18 +129,20 @@ class SocialAuthController extends BaseController
             return $this->register($request, $social, $SocialUser);
         }
 
-        //If someone already attached current socialProvider account
-        if ($this->manager->socialUserQuery($SocialUser->getId())->exists()) {
+        // if user already attached
+        if ($request->user()->isAttached($social->slug)) {
             throw new SocialUserAttachException(
-                back()->withErrors('Somebody already attached this account'),
+                redirect($this->redirectPath())
+                    ->withErrors(trans('social-auth::messages.user_already_attach', ['social' => $social->label])),
                 $social
             );
         }
 
-        // if user already attached
-        if ($request->user()->isAttached($social->slug)) {
+        //If someone already attached current socialProvider account
+        if ($this->manager->socialUserQuery($SocialUser->getId())->exists()) {
             throw new SocialUserAttachException(
-                back()->withErrors('User already attached ' . $social->label . ' social provider'),
+                redirect($this->redirectPath())
+                    ->withErrors(trans('social-auth::messages.someone_already_attach')),
                 $social
             );
         }
@@ -161,7 +166,7 @@ class SocialAuthController extends BaseController
 
         if (!$result) {
             throw new SocialUserAttachException(
-                back()->withErrors('Error while user detached ' . $social->label . ' social provider'),
+                back()->withErrors(trans('social-auth::messages.detach_error', ['social' => $social->label])),
                 $social
             );
         }

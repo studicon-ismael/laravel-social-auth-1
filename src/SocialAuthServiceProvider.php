@@ -30,12 +30,18 @@ class SocialAuthServiceProvider extends ServiceProvider
         }
 
         // Views
-        $this->loadViewsFrom(resource_path('views/vendor/social'), 'social-auth');
         $this->loadViewsFrom($resource_folder . '/views', 'social-auth');
 
         $this->publishes([
             $resource_folder . '/views' => resource_path('views/vendor/social'),
         ], 'views');
+
+        // Translations
+        $this->loadTranslationsFrom($resource_folder . '/lang', 'social-auth');
+
+        $this->publishes([
+            $resource_folder . '/lang' => resource_path('lang/vendor/social-auth'),
+        ], 'lang');
 
         // Routes
         require $resource_folder . '/routes/routes.php';
