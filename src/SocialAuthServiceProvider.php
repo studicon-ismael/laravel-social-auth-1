@@ -50,7 +50,7 @@ class SocialAuthServiceProvider extends ServiceProvider
         $resource_folder = __DIR__ . '/../resources';
 
         $this->publishes([
-            $resource_folder . '/config/social-auth.php' => $this->app->configPath() . '/' . 'social-auth.php',
+            $resource_folder . '/config/social-auth.php' => $this->app->configPath() . '/social-auth.php',
         ], 'config');
 
         if (!class_exists('CreateSocialProvidersTable')) {
@@ -66,7 +66,7 @@ class SocialAuthServiceProvider extends ServiceProvider
         $this->loadViewsFrom($resource_folder . '/views', 'social-auth');
 
         $this->publishes([
-            $resource_folder . '/views' => resource_path('views/vendor/social'),
+            $resource_folder . '/views' => resource_path('views/vendor/social-auth'),
         ], 'views');
 
         // Translations

@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
  * Class SocialProvider
  * @package Social\Models
  *
+ * @property int $id
  * @param string $slug
  * @param string $label
- * @property int $id
  * @property string $label
  * @property string $slug
  * @property string $created_at

@@ -3,11 +3,12 @@
 $this->app['router']->group(
     [
         'namespace' => 'ZFort\SocialAuth\Controllers',
-        'middleware' => ['web']
+        'middleware' => ['web'],
+        'as' => 'social.'
     ],
     function ($router) {
-        $router->get('social/{social}', 'SocialAuthController@getAccount')->name('social.auth');
-        $router->get('social/callback/{social}', 'SocialAuthController@callback')->name('social.callback');
-        $router->get('social/detach/{social}', 'SocialAuthController@detachAccount')->name('social.detach');
+        $router->get('social/{social}', 'SocialAuthController@getAccount')->name('auth');
+        $router->get('social/callback/{social}', 'SocialAuthController@callback')->name('callback');
+        $router->get('social/detach/{social}', 'SocialAuthController@detachAccount')->name('detach');
     }
 );

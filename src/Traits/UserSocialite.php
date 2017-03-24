@@ -22,7 +22,7 @@ trait UserSocialite
     }
 
     /**
-     * Check whether user attached to social network
+     * Check social network is attached to user
      *
      * @param $slug
      * @return mixed
@@ -36,22 +36,22 @@ trait UserSocialite
      * Attach social network provider to the user
      *
      * @param SocialProvider $social
-     * @param string $social_id
+     * @param string $socialId
      * @param string $token
-     * @param int $expires_in
+     * @param int $expiresIn
      */
-    public function attachSocial($social, string $social_id, string $token, int $expires_in = null)
+    public function attachSocial($social, string $socialId, string $token, int $expiresIn = null)
     {
-        $data = compact('social_id', 'token');
+        $data = ['social_id' => $socialId, 'token' => $token];
 
-        $expires_in = $expires_in
+        $expiresIn = $expiresIn
             ? date_create('now')
-                ->add(DateInterval::createFromDateString($expires_in . ' seconds'))
+                ->add(DateInterval::createFromDateString($expiresIn . ' seconds'))
                 ->format($this->getDateFormat())
             : false;
 
-        if ($expires_in) {
-            $data['expires_in'] = $expires_in;
+        if ($expiresIn) {
+            $data['expires_in'] = $expiresIn;
         }
 
         $this->socials()->attach($social, $data);
