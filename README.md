@@ -1,4 +1,4 @@
-# social-auth
+# Social Authentication
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
@@ -9,24 +9,8 @@
 
 This package give ability to 
  * Sign In 
- * Register
- * link user account with social network
- 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what
-PSRs you support to avoid any confusion with users and contributors.
-
-## Structure
-
-If any of the following are applicable to your project, then the directory structure should follow industry best practises by being named the following.
-
-```
-bin/        
-config/
-src/
-tests/
-vendor/
-```
-
+ * Sign Up
+ * Attach/Detach social network provider to the existing account
 
 ## Install
 
@@ -35,32 +19,138 @@ Via Composer
 ``` bash
 $ composer require zfort/social-auth
 ```
-Full documentation here [Bitbucket repository](https://bibucket.org).
+
+Now add the service provider in config/app.php file:
+```php
+'providers' => [
+    // ...
+    ZFort\SocialAuth\SocialAuthServiceProvider::class,
+];
+```
+
+You can publish the migration with:
+```bash
+$ php artisan vendor:publish --provider="ZFort\SocialAuth\SocialAuthServiceProvider" --tag="migrations"
+```
+
+The package assumes that your users table name is called "users". If this is not the case you should manually edit the published migration to use your custom table name.
+
+After the migration has been published you can create the social_providers table for storing supported 
+providers and user_has_social_provider pivot table by running the migrations:
+```bash
+$ php artisan migrate
+```
+
+You can publish the config-file with:
+```bash
+$ php artisan vendor:publish --provider="ZFort\SocialAuth\SocialAuthServiceProvider" --tag="config"
+```
+
+This is the contents of the published config/social-auth.php config file:
+
+```php
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Additional service providers
+    |--------------------------------------------------------------------------
+    |
+    | The social providers listed here will enable support for additional social
+    | providers which provided by https://socialiteproviders.github.io/ just
+    | add new event listener from the installation guide
+    |
+    */
+    'providers' => [
+        //
+    ],
+
+    'models' => [
+        /*
+         * When using the "UserSocialite" trait from this package, we need to know which
+         * Eloquent model should be used to retrieve your available social providers. Of course, it
+         * is often just the "SocialProvider" model but you may use whatever you like.
+         */
+        'social' => \ZFort\SocialAuth\Models\SocialProvider::class,
+    ],
+
+    'table_names' => [
+
+       /*
+       |--------------------------------------------------------------------------
+       | Users Table
+       |--------------------------------------------------------------------------
+       |
+       | The table for storing relation between users and social providers. Also there is
+       | a place for saving "user social network id", "token", "expiresIn" if it exist
+       |
+       */
+        'user_has_social_provider' => 'user_has_social_provider',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Social Providers Table
+        |--------------------------------------------------------------------------
+        |
+        | The table that contains all social network providers which your application use.
+        |
+        */
+        'social_providers' => 'social_providers'
+    ],
+
+    'foreign_keys' => [
+
+        /*
+         * The name of the foreign key to the users table.
+         */
+        'users' => 'user_id',
+
+        /*
+         * The name of the foreign key to the socials table
+         */
+        'socials' => 'social_id'
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication redirection
+    |--------------------------------------------------------------------------
+    |
+    | Redirect path after success/error login via social network
+    |
+    */
+    'redirect' => '/home'
+];
+```
+
+Or you can publish and modify view templates with:
+```bash
+$ php artisan vendor:publish --provider="ZFort\SocialAuth\SocialAuthServiceProvider" --tag="views"
+```
+
+Also you can publish and modify translation file:
+```bash
+$ php artisan vendor:publish --provider="ZFort\SocialAuth\SocialAuthServiceProvider" --tag="lang"
+```
 
 ##### Add credetials to your project
 
 File .env
 ```ini
+FB_ID = <FacebookID>
+FB_SECRET = <FacebookSecret>
+FB_REDIRECT = <your.domain>/social/callback/facebook
 
-FB_ID =<FacebookID>
-FB_SECRET =<FacebookSecret>
-FB_REDIRECT =<your domain>/social/handle/facebook
+GOOGLE_ID = <GoogleID>
+GOOGLE_SECRET = <GoogleSecret>
+GOOGLE_REDIRECT = <your.domain>/social/callback/google
 
-TW_ID =<TwitterID>
-TW_SECRET =<TwitterSecret>
-TW_REDIRECT =<your domain>/social/handle/twitter
-
-GOOGLE_ID =<GoogleID>
-GOOGLE_SECRET =<GoogleSecret>
-GOOGLE_REDIRECT =<your domain>/social/handle/google
-
-GITHUB_ID =<GithubID>
-GITHUB_SECRET =<GithubSecret>
-GITHUB_REDIRECT =<your domain>/social/handle/github
-
+GITHUB_ID = <GithubID>
+GITHUB_SECRET = <GithubSecret>
+GITHUB_REDIRECT = <your.domain>/social/callback/github
 ```
 
-#####File config/services.php
+File config/services.php
 ```ini
     'facebook' => [
         'client_id'     => env('FB_ID'),
@@ -68,17 +158,12 @@ GITHUB_REDIRECT =<your domain>/social/handle/github
         'redirect'      => env('FB_REDIRECT')
     ],
 
-    'twitter' => [
-        'client_id'     => env('TW_ID'),
-        'client_secret' => env('TW_SECRET'),
-        'redirect'      => env('TW_REDIRECT')
-    ],
-
     'google' => [
         'client_id'     => env('GOOGLE_ID'),
         'client_secret' => env('GOOGLE_SECRET'),
         'redirect'      => env('GOOGLE_REDIRECT')
     ],
+    
     'github' => [
         'client_id'     => env('GITHUB_ID'),
         'client_secret' => env('GITHUB_SECRET'),
@@ -86,26 +171,30 @@ GITHUB_REDIRECT =<your domain>/social/handle/github
     ]
 ```
 
-#####Include social buttons to your templates
+##### Include social buttons into your templates
 ```php
- <p class="or-social">Or Use Social Login</p>
-
- @include('vendor.social.buttons')
+ @include('social-auth::attach') // for authenticated user to attach/detach another socials
+ @include('social-auth::buttons') // for guests to login via
 ```
 
-#####Add UserSocialite trait to your User model
+##### Prepare your user model
+
+Implement SocialAuthenticatable interface
+
+Add UserSocialite trait to your User model
+
 ```php
+namespace App\Models;
 
-use Social\Traits\UserSocialite;
+use Illuminate\Database\Eloquent\Model;
+use ZFort\SocialAuth\Traits\UserSocialite;
+use ZFort\SocialAuth\Contracts\SocialAuthenticatable;
 
-class User { ...
-
-use  UserSocialite;
-.
-.
-.
+class User extends Model implements SocialAuthenticatable
+{
+    use UserSocialite;
+   ...
 }
-
 ```
 ##### Routes
 
@@ -116,29 +205,19 @@ For example
 ```php
 Route::get('social/{social}', 'Auth\SocialAuthController@getAccount');
 Route::get('social/callback/{social}', 'Auth\SocialAuthController@callback');
-Route::get('social/unlink/{social}', 'SocialAuthController@deleteAccount');
+Route::get('social/detach/{social}', 'SocialAuthController@deleteAccount');
 ```
-
 
 In case if you no need any special functionality ypu can use our default controllers
 
-##### Migrations & Seeds
-
-Run migration and seed.
-```php
-php artisan Social:migrate
-php artisan Social:seed
-
-```
- 
 ##### Customize for your project
 
 ###### Custom User Model
 User model we takes from the  config('auth.users.model');
 
 ###### User Fields Mapping
-Trait UserSocial contains method mapSocialFields for mapping cisoal fields for user model
-If you need yuo can redefine this method for ypur project in your UserModel 
+SocialAuthenticatable interface contains method ```mapSocialData``` for mapping social fields for user model
+If you need you can redefine this method for your preferences project in your UserModel 
 
 ## Change log
 
@@ -160,8 +239,8 @@ If you discover any security related issues, please email developer@zfort.com in
 
 ## Credits
 
-- [zFort][link-author]
-- [All Contributors][link-contributors]
+- [zFort](https://zfort.com)
+- [All Contributors](link-contributors)
 
 ## License
 

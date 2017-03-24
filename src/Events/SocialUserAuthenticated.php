@@ -1,11 +1,14 @@
 <?php
 
-namespace Social\Events;
+namespace ZFort\SocialAuth\Events;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 
 class SocialUserAuthenticated extends SocialEvent
 {
+    /**
+     * @var Authenticatable
+     */
     public $user;
 
     /**
@@ -17,4 +20,3 @@ class SocialUserAuthenticated extends SocialEvent
         $this->user = $user;
     }
 }
-
