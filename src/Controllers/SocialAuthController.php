@@ -30,8 +30,10 @@ use ZFort\SocialAuth\SocialProviderManager;
  */
 class SocialAuthController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    use RedirectsUsers;
+    use AuthorizesRequests,
+        DispatchesJobs,
+        ValidatesRequests,
+        RedirectsUsers;
 
     /**
      * Redirect path
@@ -62,6 +64,7 @@ class SocialAuthController extends BaseController
 
     /**
      * SocialAuthController constructor. Register Guard contract dependency
+     *
      * @param Guard $auth
      * @param Socialite $socialite
      */
@@ -97,6 +100,7 @@ class SocialAuthController extends BaseController
 
     /**
      * Redirect callback for social network
+     *
      * @param Request $request
      * @param SocialProvider $social
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
@@ -126,13 +130,16 @@ class SocialAuthController extends BaseController
 
         // if user is guest
         if (!$this->auth->check()) {
-            return $this->register($request, $social, $SocialUser);
+            return $this->processData($request, $social, $SocialUser);
         }
 
+        $redirect_path = $this->redirectPath();
+        $User = $request->user();
+
         // if user already attached
-        if ($request->user()->isAttached($social->slug)) {
+        if ($User->isAttached($social->slug)) {
             throw new SocialUserAttachException(
-                redirect($this->redirectPath())
+                redirect($redirect_path)
                     ->withErrors(trans('social-auth::messages.user_already_attach', ['social' => $social->label])),
                 $social
             );
@@ -141,15 +148,15 @@ class SocialAuthController extends BaseController
         //If someone already attached current socialProvider account
         if ($this->manager->socialUserQuery($SocialUser->getId())->exists()) {
             throw new SocialUserAttachException(
-                redirect($this->redirectPath())
+                redirect($redirect_path)
                     ->withErrors(trans('social-auth::messages.someone_already_attach')),
                 $social
             );
         }
 
-        $this->manager->attach($request->user(), $SocialUser);
+        $this->manager->attach($User, $SocialUser);
 
-        return redirect($this->redirectPath());
+        return redirect($redirect_path);
     }
 
     /**
@@ -162,7 +169,8 @@ class SocialAuthController extends BaseController
      */
     public function detachAccount(Request $request, SocialProvider $social)
     {
-        $result = $request->user()->socials()->detach($social->id);
+        $User = $request->user();
+        $result = $User->socials()->detach($social->id);
 
         if (!$result) {
             throw new SocialUserAttachException(
@@ -171,27 +179,30 @@ class SocialAuthController extends BaseController
             );
         }
 
-        event(new SocialUserDetached($request->user(), $social, $result));
+        event(new SocialUserDetached($User, $social, $result));
 
-        return back();
+        return redirect($this->redirectPath());
     }
 
     /**
+     * Process user using data from social network
+     *
      * @param Request $request
      * @param SocialProvider $social
      * @param SocialUser $socialUser
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    protected function register(Request $request, SocialProvider $social, SocialUser $socialUser)
+    protected function processData(Request $request, SocialProvider $social, SocialUser $socialUser)
     {
         //Checks by socialProvider identifier if user exists
         $exist_user = $this->manager->getUserByKey($socialUser->getId());
+        $redirect_path = $this->redirectPath();
 
         //Checks if user exists with current socialProvider identifier, auth if does
         if ($exist_user) {
             $this->login($exist_user);
 
-            return redirect($this->redirectPath());
+            return redirect($redirect_path);
         }
 
         //Checks if account exists with socialProvider email, auth and attach current socialProvider if does
@@ -201,14 +212,14 @@ class SocialAuthController extends BaseController
 
             $this->manager->attach($request->user(), $socialUser);
 
-            return redirect($this->redirectPath());
+            return redirect($redirect_path);
         }
 
         //If account for current socialProvider data doesn't exist - create new one
         $new_user = $this->manager->createNewUser($this->userModel, $social, $socialUser);
         $this->login($new_user);
 
-        return redirect($this->redirectPath());
+        return redirect($redirect_path);
     }
 
     /**

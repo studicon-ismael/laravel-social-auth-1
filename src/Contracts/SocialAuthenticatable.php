@@ -32,6 +32,9 @@ interface SocialAuthenticatable
     public function attachSocial($social, string $social_id, string $token, int $expires_in = null);
 
     /**
+     * Provide ability to modify user data
+     * received from social network
+     *
      * @param User $socialUser
      * @return array
      */
