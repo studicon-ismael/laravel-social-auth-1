@@ -13,7 +13,7 @@ class CreateSocialProvidersTable extends Migration
      */
     public function up()
     {
-        $config = config('social-auth.table_names');
+        $table_names = config('social-auth.table_names');
         $foreign_keys = config('social-auth.foreign_keys');
         $model_name = config('auth.providers.users.model');
 
@@ -21,7 +21,7 @@ class CreateSocialProvidersTable extends Migration
         $userModel = new $model_name;
         $userTable = $userModel->getTable();
 
-        Schema::create($config['social_providers'], function (Blueprint $table) use ($userTable, $config) {
+        Schema::create($table_names['social_providers'], function (Blueprint $table) use ($userTable, $table_names) {
             $table->increments('id');
             $table->string('label');
             $table->string('slug')->unique();
@@ -29,8 +29,8 @@ class CreateSocialProvidersTable extends Migration
         });
 
         Schema::create(
-            $config['user_has_social_provider'],
-            function (Blueprint $table) use ($userTable, $config, $foreign_keys) {
+            $table_names['user_has_social_provider'],
+            function (Blueprint $table) use ($userTable, $table_names, $foreign_keys) {
                 $table->integer($foreign_keys['users'])->unsigned();
                 $table->integer('social_provider_id')->unsigned();
                 $table->string('token');
@@ -44,10 +44,10 @@ class CreateSocialProvidersTable extends Migration
 
                 $table->foreign('social_provider_id')
                     ->references('id')
-                    ->on($config['social_providers'])
+                    ->on($table_names['social_providers'])
                     ->onDelete('cascade');
 
-                $table->primary(['user_id', 'social_provider_id']);
+                $table->primary([$foreign_keys['users'], 'social_provider_id']);
             }
         );
     }
@@ -59,9 +59,9 @@ class CreateSocialProvidersTable extends Migration
      */
     public function down()
     {
-        $config = config('social-auth.table_names');
+        $table_names = config('social-auth.table_names');
 
-        Schema::dropIfExists($config['user_has_social_provider']);
-        Schema::dropIfExists($config['social_providers']);
+        Schema::dropIfExists($table_names['user_has_social_provider']);
+        Schema::dropIfExists($table_names['social_providers']);
     }
 }

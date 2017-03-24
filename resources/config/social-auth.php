@@ -18,12 +18,9 @@ return [
 
     'models' => [
         /*
-         * When using the "HasRoles" trait from this package, we need to know which
-         * Eloquent model should be used to retrieve your permissions. Of course, it
-         * is often just the "Permission" model but you may use whatever you like.
-         *
-         * The model you want to use as a Permission model needs to implement the
-         * `Spatie\Permission\Contracts\Permission` contract.
+         * When using the "UserSocialite" trait from this package, we need to know which
+         * Eloquent model should be used to retrieve your available social providers. Of course, it
+         * is often just the "SocialProvider" model but you may use whatever you like.
          */
         'social' => \ZFort\SocialAuth\Models\SocialProvider::class,
     ],
@@ -35,8 +32,8 @@ return [
        | Users Table
        |--------------------------------------------------------------------------
        |
-       | The table for saving relation between users and social providers.
-       | Also there is a place for saving "user social network id" and "token" if it exist
+       | The table for storing relation between users and social providers. Also there is
+       | a place for saving "user social network id", "token", "expiresIn" if it exist
        |
        */
         'user_has_social_provider' => 'user_has_social_provider',
@@ -46,7 +43,7 @@ return [
         | Social Providers Table
         |--------------------------------------------------------------------------
         |
-        | The table that your save all social network which your application use.
+        | The table that contains all social network providers which your application use.
         |
         */
         'social_providers' => 'social_providers'
@@ -70,7 +67,7 @@ return [
     | Authentication redirection
     |--------------------------------------------------------------------------
     |
-    | Redirect path after successful login via social network
+    | Redirect path after success/error login via social network
     |
     */
     'redirect' => '/home'

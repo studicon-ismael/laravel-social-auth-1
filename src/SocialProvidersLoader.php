@@ -67,7 +67,7 @@ class SocialProvidersLoader
      */
     public function registerSocialProviders()
     {
-        $this->refreshProvidersCache();
+        $this->registerCacheRefresher();
 
         foreach (config('social-auth.providers') as $provider) {
             $this->dispatcher->listen(
@@ -80,7 +80,7 @@ class SocialProvidersLoader
     /**
      * Remove cache data on social providers table update
      */
-    protected function refreshProvidersCache()
+    protected function registerCacheRefresher()
     {
         $model = $this->social_model;
 

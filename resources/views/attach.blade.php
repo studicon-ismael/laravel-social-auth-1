@@ -1,4 +1,4 @@
-@if ($user = Auth::user())
+@if ($user = auth()->user())
     @foreach($socialProviders as $provider)
         @if ($user->isAttached($provider->slug))
             <a
