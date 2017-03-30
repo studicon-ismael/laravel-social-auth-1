@@ -70,12 +70,10 @@ trait UserSocialite
         $name = $name ?? $socialUser->getEmail();
 
         $result = [
-            'email' => $socialUser->getEmail(),
+            $this->getEmailField() => $socialUser->getEmail(),
             'name' => $name,
             'verified' => $raw['verified'] ?? true,
-            'token' => $socialUser->token,
             'avatar' => $socialUser->getAvatar(),
-            'expiresIn' => $socialUser->expiresIn
         ];
 
         return $result;
