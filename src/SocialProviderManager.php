@@ -78,8 +78,6 @@ class SocialProviderManager
             $userModel->mapSocialData($socialUser)
         );
 
-        $NewUser->avatar = $socialUser->getAvatar();
-
         $NewUser->attachSocial(
             $social,
             $socialUser->getId(),
