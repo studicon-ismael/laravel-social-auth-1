@@ -169,8 +169,18 @@ class SocialAuthController extends BaseController
      */
     public function detachAccount(Request $request, SocialProvider $social)
     {
+        /** @var \ZFort\SocialAuth\Contracts\SocialAuthenticatable $User **/
         $User = $request->user();
-        $result = $User->socials()->detach($social->id);
+        $UserSocials = $User->socials();
+
+        if ($UserSocials->count() === 1 and empty($User->{$User->getEmailField()})) {
+            throw new SocialUserAttachException(
+                back()->withErrors(trans('social-auth::messages.detach_error_last')),
+                $social
+            );
+        }
+
+        $result = $UserSocials->detach($social->id);
 
         if (!$result) {
             throw new SocialUserAttachException(
