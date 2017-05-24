@@ -8,13 +8,11 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use ZFort\SocialAuth\Events\SocialUserAuthenticated;
 use ZFort\SocialAuth\Events\SocialUserDetached;
 use ZFort\SocialAuth\Models\SocialProvider;
-
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-
 use Laravel\Socialite\Contracts\Factory as Socialite;
 use ZFort\SocialAuth\Exceptions\SocialGetUserInfoException;
 use ZFort\SocialAuth\Exceptions\SocialUserAttachException;
