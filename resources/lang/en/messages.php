@@ -15,5 +15,6 @@ return [
     'no_user_data' => 'Can\'t get users data from :social',
     'someone_already_attach' => 'Somebody already attached this account',
     'user_already_attach' => 'User already attached :social social provider',
-    'detach_error' => 'Error while user detached :social social provider'
+    'detach_error' => 'Error while user detached :social social provider',
+    'detach_error_last' => 'Can\'t detach your single login method'
 ];
