@@ -8,7 +8,7 @@ $this->app['router']->group(
     ],
     function ($router) {
         $router->get('social/{social}', 'SocialAuthController@getAccount')->name('auth');
-        $router->get('social/callback/{social}', 'SocialAuthController@callback')->name('callback');
-        $router->get('social/detach/{social}', 'SocialAuthController@detachAccount')->name('detach');
+        $router->get('social/{social}/{social}callback', 'SocialAuthController@callback')->name('callback');
+        $router->get('social/{social}/detach', 'SocialAuthController@detachAccount')->name('detach');
     }
 );
