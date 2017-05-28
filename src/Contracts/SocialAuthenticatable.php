@@ -7,14 +7,14 @@ use Laravel\Socialite\Contracts\User;
 interface SocialAuthenticatable
 {
     /**
-     * User socials relationship
+     * User socials relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function socials();
 
     /**
-     * Check social network is attached to user
+     * Check social network is attached to user.
      *
      * @param string $slug
      * @return bool
@@ -22,7 +22,7 @@ interface SocialAuthenticatable
     public function isAttached(string $slug): bool;
 
     /**
-     * Attach social network provider to the user
+     * Attach social network provider to the user.
      *
      * @param $social
      * @param string $socialId
@@ -33,7 +33,7 @@ interface SocialAuthenticatable
 
     /**
      * Provide ability to modify user data
-     * received from social network
+     * received from social network.
      *
      * @param User $socialUser
      * @return array
@@ -41,7 +41,7 @@ interface SocialAuthenticatable
     public function mapSocialData(User $socialUser);
 
     /**
-     * Get model email field name
+     * Get model email field name.
      *
      * @return string
      */

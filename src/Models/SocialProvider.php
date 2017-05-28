@@ -5,8 +5,7 @@ namespace ZFort\SocialAuth\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class SocialProvider
- * @package Social\Models
+ * Class SocialProvider.
  *
  * @property int $id
  * @param string $slug
