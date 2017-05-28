@@ -46,7 +46,7 @@ return [
         | The table that contains all social network providers which your application use.
         |
         */
-        'social_providers' => 'social_providers'
+        'social_providers' => 'social_providers',
     ],
 
     'foreign_keys' => [
@@ -59,7 +59,7 @@ return [
         /*
          * The name of the foreign key to the socials table
          */
-        'socials' => 'social_id'
+        'socials' => 'social_id',
     ],
 
     /*
@@ -70,5 +70,5 @@ return [
     | Redirect path after success/error login via social network
     |
     */
-    'redirect' => '/home'
+    'redirect' => '/home',
 ];

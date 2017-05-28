@@ -2,12 +2,12 @@
 
 namespace ZFort\SocialAuth;
 
-use Illuminate\Contracts\Auth\Authenticatable;
-use ZFort\SocialAuth\Contracts\SocialAuthenticatable;
-use ZFort\SocialAuth\Events\SocialUserAttached;
-use ZFort\SocialAuth\Events\SocialUserCreated;
 use ZFort\SocialAuth\Models\SocialProvider;
+use Illuminate\Contracts\Auth\Authenticatable;
+use ZFort\SocialAuth\Events\SocialUserCreated;
+use ZFort\SocialAuth\Events\SocialUserAttached;
 use Laravel\Socialite\Contracts\User as SocialUser;
+use ZFort\SocialAuth\Contracts\SocialAuthenticatable;
 
 class SocialProviderManager
 {
@@ -35,7 +35,7 @@ class SocialProviderManager
     }
 
     /**
-     * Gets user by unique social identifier
+     * Gets user by unique social identifier.
      *
      * @param string $key
      * @return mixed
@@ -62,7 +62,7 @@ class SocialProviderManager
     }
 
     /**
-     * Create new system user by social user data
+     * Create new system user by social user data.
      *
      * @param Authenticatable $userModel
      * @param SocialProvider $social

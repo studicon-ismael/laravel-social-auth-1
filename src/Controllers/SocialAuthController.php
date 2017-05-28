@@ -2,29 +2,26 @@
 
 namespace ZFort\SocialAuth\Controllers;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use ZFort\SocialAuth\Events\SocialUserAuthenticated;
-use ZFort\SocialAuth\Events\SocialUserDetached;
-use ZFort\SocialAuth\Models\SocialProvider;
-use GuzzleHttp\Exception\RequestException;
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller as BaseController;
-use Laravel\Socialite\Contracts\Factory as Socialite;
-use ZFort\SocialAuth\Exceptions\SocialGetUserInfoException;
-use ZFort\SocialAuth\Exceptions\SocialUserAttachException;
-use Laravel\Socialite\Contracts\User as SocialUser;
-use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Guard;
+use GuzzleHttp\Exception\RequestException;
+use ZFort\SocialAuth\Models\SocialProvider;
 use ZFort\SocialAuth\SocialProviderManager;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Foundation\Auth\RedirectsUsers;
+use ZFort\SocialAuth\Events\SocialUserDetached;
+use Laravel\Socialite\Contracts\User as SocialUser;
+use Illuminate\Routing\Controller as BaseController;
+use ZFort\SocialAuth\Events\SocialUserAuthenticated;
+use Laravel\Socialite\Contracts\Factory as Socialite;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use ZFort\SocialAuth\Exceptions\SocialUserAttachException;
+use ZFort\SocialAuth\Exceptions\SocialGetUserInfoException;
 
 /**
- * Class SocialAuthController
- * @package App\Http\Controllers
- *
- * Provide social auth logic
+ * Class SocialAuthController.
  */
 class SocialAuthController extends BaseController
 {
@@ -34,7 +31,7 @@ class SocialAuthController extends BaseController
         RedirectsUsers;
 
     /**
-     * Redirect path
+     * Redirect path.
      *
      * @var string
      */
@@ -61,7 +58,7 @@ class SocialAuthController extends BaseController
     protected $manager;
 
     /**
-     * SocialAuthController constructor. Register Guard contract dependency
+     * SocialAuthController constructor. Register Guard contract dependency.
      *
      * @param Guard $auth
      * @param Socialite $socialite
@@ -84,7 +81,7 @@ class SocialAuthController extends BaseController
 
     /**
      * If there is no response from the social network, redirect the user to the social auth page
-     * else make create with information from social network
+     * else make create with information from social network.
      *
      * @param SocialProvider $social bound by "Route model binding" feature
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
@@ -97,7 +94,7 @@ class SocialAuthController extends BaseController
     }
 
     /**
-     * Redirect callback for social network
+     * Redirect callback for social network.
      *
      * @param Request $request
      * @param SocialProvider $social
@@ -119,7 +116,7 @@ class SocialAuthController extends BaseController
         }
 
         // if we have no social info for some reason
-        if (!$SocialUser) {
+        if (! $SocialUser) {
             throw new SocialGetUserInfoException(
                 $social,
                 trans('social-auth::messages.no_user_data', ['social' => $social->label])
@@ -127,7 +124,7 @@ class SocialAuthController extends BaseController
         }
 
         // if user is guest
-        if (!$this->auth->check()) {
+        if (! $this->auth->check()) {
             return $this->processData($request, $social, $SocialUser);
         }
 
@@ -158,7 +155,7 @@ class SocialAuthController extends BaseController
     }
 
     /**
-     * Detaches social account for user
+     * Detaches social account for user.
      *
      * @param Request $request
      * @param SocialProvider $social
@@ -167,7 +164,7 @@ class SocialAuthController extends BaseController
      */
     public function detachAccount(Request $request, SocialProvider $social)
     {
-        /** @var \ZFort\SocialAuth\Contracts\SocialAuthenticatable $User **/
+        /** @var \ZFort\SocialAuth\Contracts\SocialAuthenticatable $User */
         $User = $request->user();
         $UserSocials = $User->socials();
 
@@ -180,7 +177,7 @@ class SocialAuthController extends BaseController
 
         $result = $UserSocials->detach($social->id);
 
-        if (!$result) {
+        if (! $result) {
             throw new SocialUserAttachException(
                 back()->withErrors(trans('social-auth::messages.detach_error', ['social' => $social->label])),
                 $social
@@ -193,7 +190,7 @@ class SocialAuthController extends BaseController
     }
 
     /**
-     * Process user using data from social network
+     * Process user using data from social network.
      *
      * @param Request $request
      * @param SocialProvider $social
@@ -231,7 +228,7 @@ class SocialAuthController extends BaseController
     }
 
     /**
-     * Login user
+     * Login user.
      *
      * @param Authenticatable $user
      */

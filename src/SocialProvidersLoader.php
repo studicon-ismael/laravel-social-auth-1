@@ -41,7 +41,7 @@ class SocialProvidersLoader
     }
 
     /**
-     * Get available social providers
+     * Get available social providers.
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
@@ -55,7 +55,7 @@ class SocialProvidersLoader
     }
 
     /**
-     * Forget cached social providers
+     * Forget cached social providers.
      */
     public function forgetSocialProviders()
     {
@@ -63,7 +63,7 @@ class SocialProvidersLoader
     }
 
     /**
-     * Register additional social providers
+     * Register additional social providers.
      */
     public function registerSocialProviders()
     {
@@ -72,13 +72,13 @@ class SocialProvidersLoader
         foreach (config('social-auth.providers') as $provider) {
             $this->dispatcher->listen(
                 \SocialiteProviders\Manager\SocialiteWasCalled::class,
-                $provider . '@handle'
+                $provider.'@handle'
             );
         }
     }
 
     /**
-     * Remove cache data on social providers table update
+     * Remove cache data on social providers table update.
      */
     protected function registerCacheRefresher()
     {
