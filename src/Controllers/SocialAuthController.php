@@ -8,13 +8,11 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use ZFort\SocialAuth\Events\SocialUserAuthenticated;
 use ZFort\SocialAuth\Events\SocialUserDetached;
 use ZFort\SocialAuth\Models\SocialProvider;
-
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-
 use Laravel\Socialite\Contracts\Factory as Socialite;
 use ZFort\SocialAuth\Exceptions\SocialGetUserInfoException;
 use ZFort\SocialAuth\Exceptions\SocialUserAttachException;
@@ -169,8 +167,18 @@ class SocialAuthController extends BaseController
      */
     public function detachAccount(Request $request, SocialProvider $social)
     {
+        /** @var \ZFort\SocialAuth\Contracts\SocialAuthenticatable $User **/
         $User = $request->user();
-        $result = $User->socials()->detach($social->id);
+        $UserSocials = $User->socials();
+
+        if ($UserSocials->count() === 1 and empty($User->{$User->getEmailField()})) {
+            throw new SocialUserAttachException(
+                back()->withErrors(trans('social-auth::messages.detach_error_last')),
+                $social
+            );
+        }
+
+        $result = $UserSocials->detach($social->id);
 
         if (!$result) {
             throw new SocialUserAttachException(

@@ -151,7 +151,7 @@ GITHUB_REDIRECT = <your.domain>/social/callback/github
 ```
 
 File config/services.php
-```ini
+```php
     'facebook' => [
         'client_id'     => env('FB_ID'),
         'client_secret' => env('FB_SECRET'),
@@ -204,8 +204,8 @@ put your custom url into routes file.
 For example 
 ```php
 Route::get('social/{social}', 'Auth\SocialAuthController@getAccount');
-Route::get('social/callback/{social}', 'Auth\SocialAuthController@callback');
-Route::get('social/detach/{social}', 'SocialAuthController@deleteAccount');
+Route::get('social/{social}/callback', 'Auth\SocialAuthController@callback');
+Route::get('social/{social}/detach', 'SocialAuthController@deleteAccount');
 ```
 
 In case if you no need any special functionality ypu can use our default controllers
