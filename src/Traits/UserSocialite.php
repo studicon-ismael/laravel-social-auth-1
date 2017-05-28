@@ -2,15 +2,15 @@
 
 namespace ZFort\SocialAuth\Traits;
 
-use ZFort\SocialAuth\Events\SocialUserAuthenticated;
-use ZFort\SocialAuth\Models\SocialProvider;
 use DateInterval;
 use Laravel\Socialite\Contracts\User;
+use ZFort\SocialAuth\Models\SocialProvider;
+use ZFort\SocialAuth\Events\SocialUserAuthenticated;
 
 trait UserSocialite
 {
     /**
-     * User socials relationship
+     * User socials relationship.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -22,7 +22,7 @@ trait UserSocialite
     }
 
     /**
-     * Check social network is attached to user
+     * Check social network is attached to user.
      *
      * @param $slug
      * @return mixed
@@ -33,7 +33,7 @@ trait UserSocialite
     }
 
     /**
-     * Attach social network provider to the user
+     * Attach social network provider to the user.
      *
      * @param SocialProvider $social
      * @param string $socialId
@@ -46,7 +46,7 @@ trait UserSocialite
 
         $expiresIn = $expiresIn
             ? date_create('now')
-                ->add(DateInterval::createFromDateString($expiresIn . ' seconds'))
+                ->add(DateInterval::createFromDateString($expiresIn.' seconds'))
                 ->format($this->getDateFormat())
             : false;
 
@@ -80,7 +80,7 @@ trait UserSocialite
     }
 
     /**
-     * Get model email field name
+     * Get model email field name.
      *
      * @return string
      */

@@ -4,7 +4,7 @@ $this->app['router']->group(
     [
         'namespace' => 'ZFort\SocialAuth\Controllers',
         'middleware' => ['web'],
-        'as' => 'social.'
+        'as' => 'social.',
     ],
     function ($router) {
         $router->get('social/{social}', 'SocialAuthController@getAccount')->name('auth');
