@@ -2,12 +2,12 @@
 
 namespace ZFort\SocialAuth\Events;
 
-use Illuminate\Contracts\Auth\Authenticatable;
+use ZFort\SocialAuth\Contracts\SocialAuthenticatable;
 
 class SocialUserDetached extends SocialEvent
 {
     /**
-     * @var Authenticatable
+     * @var SocialAuthenticatable
      */
     public $user;
 
@@ -23,11 +23,11 @@ class SocialUserDetached extends SocialEvent
 
     /**
      * SocialUserAuthenticated constructor.
-     * @param Authenticatable $user
+     * @param SocialAuthenticatable $user
      * @param $social
      * @param bool $isSuccess
      */
-    public function __construct(Authenticatable $user, $social, bool $isSuccess)
+    public function __construct(SocialAuthenticatable $user, $social, bool $isSuccess)
     {
         $this->user = $user;
         $this->social = $social;
