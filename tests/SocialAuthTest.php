@@ -47,4 +47,55 @@ class SocialAuthTest extends TestCase
 
         $this->get(route('social.callback', $this->social));
     }
+
+    public function test_already_attached_social()
+    {
+        $this->disableExceptionHandling();
+
+        $User = $this->getTestUser();
+
+        $social_model = config('social-auth.models.social');
+
+        $Social = $social_model::whereSlug($this->social['social'])->first();
+        $User->attachSocial(
+            $Social,
+            'social-id',
+            'token'
+        );
+        
+        $this->actingAs($User)->get(route('social.callback', $this->social));
+
+        $Errors = $this->app['session.store']->get('errors');
+
+        $this->assertSame(
+            $Errors->first(),
+            trans('social-auth::messages.user_already_attach', ['social' => $Social->label])
+        );
+    }
+
+    public function test_someone_already_attached_social()
+    {
+        $this->disableExceptionHandling();
+        $this->socialiteMock->create('token', 'social-id');
+
+        $User = $this->getTestUser();
+        $social_model = config('social-auth.models.social');
+        $NewUser = User::create(['email' => 'user@example.com', 'avatar' => '']);
+
+        $Social = $social_model::whereSlug($this->social['social'])->first();
+        $NewUser->attachSocial(
+            $Social,
+            'social-id',
+            'token'
+        );
+
+        $this->actingAs($User)->get(route('social.callback', $this->social));
+
+        $Errors = $this->app['session.store']->get('errors');
+
+        $this->assertSame(
+            $Errors->first(),
+            trans('social-auth::messages.someone_already_attach')
+        );
+    }
 }
