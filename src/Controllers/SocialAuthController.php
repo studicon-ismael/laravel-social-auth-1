@@ -164,7 +164,7 @@ class SocialAuthController extends BaseController
      */
     public function detachAccount(Request $request, SocialProvider $social)
     {
-        /** @var \ZFort\SocialAuth\Contracts\SocialAuthenticatable $User * */
+        /** @var \ZFort\SocialAuth\Contracts\SocialAuthenticatable $User */
         $User = $request->user();
         $UserSocials = $User->socials();
 
