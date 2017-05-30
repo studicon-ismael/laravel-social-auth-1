@@ -19,6 +19,11 @@ class SocialiteMock
     protected $null_user = false;
 
     /**
+     * @var bool
+     */
+    protected $with_expires_in = false;
+
+    /**
      * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
@@ -50,6 +55,9 @@ class SocialiteMock
         $user = Mockery::mock(\Laravel\Socialite\Two\User::class);
 
         $user->token = $token;
+        if ($this->with_expires_in) {
+            $user->expiresIn = 5000;
+        }
         $user->shouldReceive('getId')->andReturn($id);
         $user->shouldReceive('getEmail')->andReturn($this->email);
         $user->shouldReceive('getName')->andReturn('John Doe');
@@ -114,6 +122,16 @@ class SocialiteMock
     public function withNullUser()
     {
         $this->null_user = true;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function withExpiresIn()
+    {
+        $this->with_expires_in = true;
 
         return $this;
     }
