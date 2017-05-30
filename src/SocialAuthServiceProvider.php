@@ -18,7 +18,7 @@ class SocialAuthServiceProvider extends ServiceProvider
 
         // Share social Providers for views
         view()->composer(['social-auth::buttons', 'social-auth::attach'], function ($view) use ($loader) {
-            /** @var \Illuminate\View\View $view */
+            /* @var \Illuminate\View\View $view */
             $view->with('socialProviders', $loader->getSocialProviders());
         });
 
