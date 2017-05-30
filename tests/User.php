@@ -3,11 +3,11 @@ namespace ZFort\SocialAuth\Test;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use ZFort\SocialAuth\Traits\UserSocialite;
 use Illuminate\Foundation\Auth\Access\Authorizable;
+use ZFort\SocialAuth\Contracts\SocialAuthenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use ZFort\SocialAuth\Contracts\SocialAuthenticatable;
-use ZFort\SocialAuth\Traits\UserSocialite;
 
 class User extends Model implements AuthorizableContract, AuthenticatableContract, SocialAuthenticatable
 {

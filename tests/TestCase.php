@@ -2,11 +2,11 @@
 
 namespace ZFort\SocialAuth\Test;
 
-use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Foundation\Exceptions\Handler;
-use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use ZFort\SocialAuth\Test\Utils\SocialiteMock;
+use Illuminate\Contracts\Debug\ExceptionHandler;
+use ZFort\SocialAuth\Test\Utils\TestExceptionHandler;
+use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 abstract class TestCase extends OrchestraTestCase
 {
@@ -93,12 +93,6 @@ abstract class TestCase extends OrchestraTestCase
 
     protected function disableExceptionHandling()
     {
-        $this->app->instance(ExceptionHandler::class, new class extends Handler {
-            public function __construct() {}
-            public function report(\Exception $e) {}
-            public function render($request, \Exception $e) {
-                throw $e;
-            }
-        });
+        $this->app->instance(ExceptionHandler::class, new TestExceptionHandler);
     }
 }

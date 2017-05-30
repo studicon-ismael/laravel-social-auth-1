@@ -3,8 +3,8 @@
 namespace ZFort\SocialAuth\Test;
 
 use DateInterval;
-use ZFort\SocialAuth\Exceptions\SocialGetUserInfoException;
 use ZFort\SocialAuth\Models\SocialProvider;
+use ZFort\SocialAuth\Exceptions\SocialGetUserInfoException;
 
 class SocialAuthTest extends TestCase
 {
