@@ -55,8 +55,7 @@ class SocialAuthServiceProvider extends ServiceProvider
             // Publish the migration
             $timestamp = date('Y_m_d_His', time());
             $this->publishes([
-                __DIR__.'/../database/migrations/create_social_providers_table.php.stub' =>
-                $this->app->databasePath().'/migrations/'.$timestamp.'_create_social_providers_table.php',
+                __DIR__.'/../database/migrations/create_social_providers_table.php.stub' => $this->app->databasePath().'/migrations/'.$timestamp.'_create_social_providers_table.php',
             ], 'migrations');
         }
 

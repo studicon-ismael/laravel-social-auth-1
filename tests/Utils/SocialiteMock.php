@@ -2,9 +2,9 @@
 
 namespace ZFort\SocialAuth\Test\Utils;
 
+use Mockery;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Socialite\Contracts\Factory as Socialite;
-use Mockery;
 
 class SocialiteMock
 {
@@ -42,6 +42,18 @@ class SocialiteMock
     {
         $this->app = $app;
         $this->email = $email;
+    }
+
+    /**
+     * Mock the Socialite Factory, so we can hijack the OAuth Request.
+     * @param  string $email
+     * @param  string $token
+     * @param  string $id
+     * @return Mockery\MockInterface
+     */
+    public function __invoke($email, $token = 'random-token', $id = 'random-id')
+    {
+        return $this->create($email, $token, $id);
     }
 
     /**
@@ -95,18 +107,6 @@ class SocialiteMock
     }
 
     /**
-     * Mock the Socialite Factory, so we can hijack the OAuth Request.
-     * @param  string $email
-     * @param  string $token
-     * @param  string $id
-     * @return Mockery\MockInterface
-     */
-    public function __invoke($email, $token = 'random-token', $id = 'random-id')
-    {
-        return $this->create($email, $token, $id);
-    }
-
-    /**
      * @return $this
      */
     public function withRequestException()
@@ -143,7 +143,7 @@ class SocialiteMock
     public function setEmail(string $email)
     {
         $this->email = $email;
-        
+
         return $this;
     }
 }

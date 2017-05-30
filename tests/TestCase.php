@@ -37,6 +37,14 @@ abstract class TestCase extends OrchestraTestCase
     }
 
     /**
+     * @return User
+     */
+    public function getTestUser(): User
+    {
+        return User::whereEmail($this->userEmail)->first();
+    }
+
+    /**
      * @param \Illuminate\Foundation\Application $app
      * @return array
      */
@@ -74,21 +82,13 @@ abstract class TestCase extends OrchestraTestCase
             $table->string('email');
             $table->string('avatar');
         });
-        include_once __DIR__ . '/../database/migrations/create_social_providers_table.php.stub';
+        include_once __DIR__.'/../database/migrations/create_social_providers_table.php.stub';
 
         (new \CreateSocialProvidersTable())->up();
 
         User::create(['email' => $this->userEmail, 'avatar' => '']);
         $app[config('social-auth.models.social')]->create(['slug' => 'facebook', 'label' => 'Facebook']);
         $app[config('social-auth.models.social')]->create(['slug' => 'google', 'label' => 'Google+']);
-    }
-
-    /**
-     * @return User
-     */
-    public function getTestUser(): User
-    {
-        return User::whereEmail($this->userEmail)->first();
     }
 
     protected function disableExceptionHandling()

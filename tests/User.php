@@ -1,4 +1,5 @@
 <?php
+
 namespace ZFort\SocialAuth\Test;
 
 use Illuminate\Auth\Authenticatable;
@@ -13,12 +14,12 @@ class User extends Model implements AuthorizableContract, AuthenticatableContrac
 {
     use Authorizable, Authenticatable;
     use UserSocialite;
+    public $timestamps = false;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = ['email', 'avatar'];
-    public $timestamps = false;
     protected $table = 'users';
 }

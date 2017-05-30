@@ -25,13 +25,13 @@ class SocialAttachTest extends TestCase
             SocialProvider::whereSlug($this->social['social'])->first(),
             [
                 'social_id' => 'social-id',
-                'token' => 'token'
+                'token' => 'token',
             ]
         );
 
         $this->actingAs($User)->get(route('social.detach', $this->social));
 
-        $this->assertTrue(!$User->socials()->whereSlug($this->social['social'])->exists());
+        $this->assertTrue(! $User->socials()->whereSlug($this->social['social'])->exists());
     }
 
     public function test_detach_error()
@@ -68,7 +68,7 @@ class SocialAttachTest extends TestCase
             $Social,
             [
                 'social_id' => 'social-id',
-                'token' => 'token'
+                'token' => 'token',
             ]
         );
 

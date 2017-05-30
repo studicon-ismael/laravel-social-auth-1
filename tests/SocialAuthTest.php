@@ -69,7 +69,7 @@ class SocialAuthTest extends TestCase
             SocialProvider::whereSlug($this->social['social'])->first(),
             [
                 'social_id' => 'social-id',
-                'token' => 'token'
+                'token' => 'token',
             ]
         );
 
