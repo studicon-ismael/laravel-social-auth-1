@@ -18,7 +18,7 @@ class SocialAuthServiceProvider extends ServiceProvider
 
         // Share social Providers for views
         view()->composer(['social-auth::buttons', 'social-auth::attach'], function ($view) use ($loader) {
-            /** @var \Illuminate\View\View $view */
+            /* @var \Illuminate\View\View $view */
             $view->with('socialProviders', $loader->getSocialProviders());
         });
 
@@ -55,7 +55,7 @@ class SocialAuthServiceProvider extends ServiceProvider
             // Publish the migration
             $timestamp = date('Y_m_d_His', time());
             $this->publishes([
-                $resource_folder.'/database/migrations/create_social_providers_table.php.stub' => $this->app->databasePath().'/migrations/'.$timestamp.'_create_social_providers_table.php',
+                __DIR__.'/../database/migrations/create_social_providers_table.php.stub' => $this->app->databasePath().'/migrations/'.$timestamp.'_create_social_providers_table.php',
             ], 'migrations');
         }
 
