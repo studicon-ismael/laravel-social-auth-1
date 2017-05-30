@@ -2,9 +2,9 @@
 
 namespace ZFort\SocialAuth\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
-use GuzzleHttp\Exception\RequestException;
 use ZFort\SocialAuth\Models\SocialProvider;
 use ZFort\SocialAuth\SocialProviderManager;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -111,7 +111,7 @@ class SocialAuthController extends BaseController
         // try to get user info from social network
         try {
             $SocialUser = $provider->user();
-        } catch (RequestException $e) {
+        } catch (Exception $e) {
             throw new SocialGetUserInfoException($social, $e->getMessage());
         }
 
