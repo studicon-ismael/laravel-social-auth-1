@@ -74,7 +74,7 @@ abstract class TestCase extends OrchestraTestCase
             $table->string('email');
             $table->string('avatar');
         });
-        include_once __DIR__ . '/../resources/database/migrations/create_social_providers_table.php.stub';
+        include_once __DIR__ . '/../database/migrations/create_social_providers_table.php.stub';
 
         (new \CreateSocialProvidersTable())->up();
 
