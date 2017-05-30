@@ -248,10 +248,10 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 
 [ico-version]: https://poser.pugx.org/zfort/social-auth/v/stable.svg?format=flat-square
 [ico-license]: https://poser.pugx.org/zfort/social-auth/license?format=flat-square
-[ico-travis]: https://img.shields.io/travis/zfort/social-auth/master.svg?format=flat-square
+[ico-travis]: https://img.shields.io/travis/zfort/social-auth/master.svg?style=flat-square
 [ico-style]: https://styleci.io/repos/33916850/shield
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/zfort/social-auth.svg?format=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/zfort/social-auth.svg?format=flat-square
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/zfort/social-auth.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/zfort/social-auth.svg?style=flat-square
 
 [link-packagist]: https://packagist.org/packages/zfort/social-auth
 [link-travis]: https://travis-ci.org/zfort/social-auth
