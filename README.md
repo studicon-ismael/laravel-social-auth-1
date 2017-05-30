@@ -4,7 +4,6 @@
 [![Software License][ico-license]](LICENSE.md)
 [![Build Status][ico-travis]][link-travis]
 [![StyleCI][ico-style]][link-style]
-[![Coverage Status][ico-scrutinizer]][link-scrutinizer]
 [![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
@@ -247,18 +246,16 @@ If you discover any security related issues, please email developer@zfort.com in
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-[ico-version]: https://img.shields.io/packagist/v/zfort/social-auth.svg?style=flat-square
-[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/zfort/social-auth/master.svg?style=flat-square
+[ico-version]: https://poser.pugx.org/zfort/social-auth/v/stable.svg?format=flat-square
+[ico-license]: https://poser.pugx.org/zfort/social-auth/license?format=flat-square
+[ico-travis]: https://img.shields.io/travis/zfort/social-auth/master.svg?format=flat-square
 [ico-style]: https://styleci.io/repos/33916850/shield
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/zfort/social-auth.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/zfort/social-auth.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/zfort/social-auth.svg?style=flat-square
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/zfort/social-auth.svg?format=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/zfort/social-auth.svg?format=flat-square
 
 [link-packagist]: https://packagist.org/packages/zfort/social-auth
 [link-travis]: https://travis-ci.org/zfort/social-auth
 [link-style]: https://styleci.io/repos/33916850
-[link-scrutinizer]: https://scrutinizer-ci.com/g/zfort/social-auth/code-structure
 [link-code-quality]: https://scrutinizer-ci.com/g/zfort/social-auth
 [link-downloads]: https://packagist.org/packages/zfort/social-auth
 [link-author]: https://github.com/zfort
