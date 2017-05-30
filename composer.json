@@ -7,7 +7,9 @@
         "social",
         "auth",
         "laravel",
-        "socialite"
+        "socialite",
+        "login",
+        "signin"
     ],
     "homepage": "https://github.com/zfort/social-auth",
     "license": "MIT",
