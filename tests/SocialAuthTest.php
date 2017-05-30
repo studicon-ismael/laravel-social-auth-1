@@ -2,13 +2,15 @@
 
 namespace ZFort\SocialAuth\Test;
 
+use DateInterval;
 use ZFort\SocialAuth\Exceptions\SocialGetUserInfoException;
+use ZFort\SocialAuth\Models\SocialProvider;
 
 class SocialAuthTest extends TestCase
 {
     protected $testEmail = 'test.user@test.com';
 
-    public function test_auth_social()
+    public function test_register_via_social_network()
     {
         $this->socialiteMock->setEmail($this->testEmail)->create();
 
@@ -17,13 +19,22 @@ class SocialAuthTest extends TestCase
         $this->assertDatabaseHas('users', ['email' => $this->testEmail]);
     }
 
-    public function test_attach_social()
+    public function test_register_with_expires_in()
     {
-        $User = $this->getTestUser();
+        $this->socialiteMock->withExpiresIn()->create();
 
-        $this->actingAs($User)->get(route('social.callback', $this->social));
+        $this->get(route('social.callback', $this->social));
 
-        $this->assertTrue($User->socials()->where('slug', $this->social['social'])->exists());
+        $this->assertTrue(
+            $this->app['auth']->user()->socials()
+            ->wherePivot(
+                'expires_in',
+                date_create('now')
+                    ->add(DateInterval::createFromDateString('5000 seconds'))
+                    ->format(app('db')->getQueryGrammar()->getDateFormat())
+            )
+            ->exists()
+        );
     }
 
     public function test_request_exception()
@@ -48,54 +59,22 @@ class SocialAuthTest extends TestCase
         $this->get(route('social.callback', $this->social));
     }
 
-    public function test_already_attached_social()
+    public function test_login_via_existing_account()
     {
-        $this->disableExceptionHandling();
-
-        $User = $this->getTestUser();
-
-        $social_model = config('social-auth.models.social');
-
-        $Social = $social_model::whereSlug($this->social['social'])->first();
-        $User->attachSocial(
-            $Social,
-            'social-id',
-            'token'
-        );
-        
-        $this->actingAs($User)->get(route('social.callback', $this->social));
-
-        $Errors = $this->app['session.store']->get('errors');
-
-        $this->assertSame(
-            $Errors->first(),
-            trans('social-auth::messages.user_already_attach', ['social' => $Social->label])
-        );
-    }
-
-    public function test_someone_already_attached_social()
-    {
-        $this->disableExceptionHandling();
         $this->socialiteMock->create('token', 'social-id');
 
         $User = $this->getTestUser();
-        $social_model = config('social-auth.models.social');
-        $NewUser = User::create(['email' => 'user@example.com', 'avatar' => '']);
 
-        $Social = $social_model::whereSlug($this->social['social'])->first();
-        $NewUser->attachSocial(
-            $Social,
-            'social-id',
-            'token'
+        $User->socials()->attach(
+            SocialProvider::whereSlug($this->social['social'])->first(),
+            [
+                'social_id' => 'social-id',
+                'token' => 'token'
+            ]
         );
 
-        $this->actingAs($User)->get(route('social.callback', $this->social));
+        $this->get(route('social.callback', $this->social));
 
-        $Errors = $this->app['session.store']->get('errors');
-
-        $this->assertSame(
-            $Errors->first(),
-            trans('social-auth::messages.someone_already_attach')
-        );
+        $this->assertSame($this->app['auth']->id(), $User->getKey());
     }
 }

@@ -17,6 +17,6 @@ class EnvironmentTest extends TestCase
     {
         $social_model = config('social-auth.models.social');
 
-        $this->assertTrue($social_model::whereSlug('facebook')->exists());
+        $this->assertTrue($social_model::whereSlug('google')->exists());
     }
 }
