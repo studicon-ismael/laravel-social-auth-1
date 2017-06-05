@@ -139,11 +139,11 @@ File .env
 ```ini
 FB_ID = <FacebookID>
 FB_SECRET = <FacebookSecret>
-FB_REDIRECT = <your.domain>/social/callback/facebook
+FB_REDIRECT = <your.domain>/social/facebook/callback
 
 GOOGLE_ID = <GoogleID>
 GOOGLE_SECRET = <GoogleSecret>
-GOOGLE_REDIRECT = <your.domain>/social/callback/google
+GOOGLE_REDIRECT = <your.domain>/social/google/callback
 
 GITHUB_ID = <GithubID>
 GITHUB_SECRET = <GithubSecret>
