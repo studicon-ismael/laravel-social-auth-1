@@ -147,7 +147,7 @@ GOOGLE_REDIRECT = <your.domain>/social/callback/google
 
 GITHUB_ID = <GithubID>
 GITHUB_SECRET = <GithubSecret>
-GITHUB_REDIRECT = <your.domain>/social/callback/github
+GITHUB_REDIRECT = <your.domain>/social/github/callback
 ```
 
 File config/services.php
