@@ -2,6 +2,7 @@
 
 namespace ZFort\SocialAuth;
 
+use ZFort\SocialAuth\Console\CacheRefreshCommand;
 use Illuminate\Support\ServiceProvider;
 
 class SocialAuthServiceProvider extends ServiceProvider
@@ -38,6 +39,15 @@ class SocialAuthServiceProvider extends ServiceProvider
             __DIR__.'/../resources/config/social-auth.php',
             'social-auth'
         );
+
+        $this->app->singleton(
+            'command.social-auth.refresh',
+            function ($app) {
+                return new CacheRefreshCommand($app[SocialProvidersLoader::class]);
+            }
+        );
+
+        $this->commands('command.social-auth.refresh');
     }
 
     /**
