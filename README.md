@@ -282,7 +282,7 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 
 [link-packagist]: https://packagist.org/packages/zfort/social-auth
 [link-travis]: https://travis-ci.org/zfort/social-auth
-[link-style]: https://styleci.io/repos/33916850
+[link-style]: https://styleci.io/repos/86463317
 [link-code-quality]: https://scrutinizer-ci.com/g/zfort/social-auth
 [link-downloads]: https://packagist.org/packages/zfort/social-auth
 [link-author]: https://github.com/zfort
