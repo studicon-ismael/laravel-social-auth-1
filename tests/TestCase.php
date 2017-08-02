@@ -29,7 +29,7 @@ abstract class TestCase extends OrchestraTestCase
     {
         parent::setUp();
 
-        config(['auth.providers.users.model' => User::class]);
+        config(['social-auth.models.user' => User::class]);
         $this->setUpDatabase($this->app);
 
         $this->socialiteMock = new SocialiteMock($this->app, $this->userEmail);

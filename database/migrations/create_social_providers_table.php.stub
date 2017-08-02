@@ -15,7 +15,7 @@ class CreateSocialProvidersTable extends Migration
     {
         $table_names = config('social-auth.table_names');
         $foreign_keys = config('social-auth.foreign_keys');
-        $model_name = config('auth.providers.users.model');
+        $model_name = config('social-auth.models.user');
 
         // Get users table name
         $userModel = new $model_name;

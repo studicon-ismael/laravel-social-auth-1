@@ -213,7 +213,7 @@ In case if you no need any special functionality ypu can use our default control
 ##### Customize for your project
 
 ###### Custom User Model
-User model we takes from the  config('auth.users.model');
+User model we takes from the config('social-auth.models.user');
 
 ###### User Fields Mapping
 SocialAuthenticatable interface contains method ```mapSocialData``` for mapping social fields for user model

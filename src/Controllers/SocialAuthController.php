@@ -69,7 +69,7 @@ class SocialAuthController extends BaseController
         $this->socialite = $socialite;
         $this->redirectTo = config('social-auth.redirect');
 
-        $className = config('auth.providers.users.model');
+        $className = config('social-auth.models.user');
         $this->userModel = new $className;
 
         $this->middleware(function ($request, $next) {
