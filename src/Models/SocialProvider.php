@@ -12,6 +12,10 @@ use Illuminate\Database\Eloquent\Model;
  * @param string $label
  * @property string $label
  * @property string $slug
+ * @property array $scopes
+ * @property array $parameters
+ * @property bool $override_scopes
+ * @property bool $stateless
  * @property string $created_at
  * @property string $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users
@@ -27,7 +31,15 @@ class SocialProvider extends Model
     /**
      * {@inheritdoc}
      */
-    protected $fillable = ['slug', 'label'];
+    protected $fillable = ['slug', 'label', 'scopes', 'parameters', 'stateless'];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $casts = [
+        'scopes' => 'array',
+        'parameters' => 'array',
+    ];
 
     /**
      * SocialProvider constructor.
@@ -49,6 +61,17 @@ class SocialProvider extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    /**
+     * Set
+     */
+    public function setScopes(array $scopes, bool $isOverride = false)
+    {
+        $this->scopes = $scopes;
+        $this->override_scopes = $isOverride;
+
+        $this->save();
     }
 
     /**
