@@ -72,6 +72,11 @@ return [
          * is often just the "SocialProvider" model but you may use whatever you like.
          */
         'social' => \ZFort\SocialAuth\Models\SocialProvider::class,
+        
+        /*
+         * User model which you will use as "SocialAuthenticatable"
+         */
+        'user' => \App\User::class,
     ],
 
     'table_names' => [
@@ -171,6 +176,28 @@ File config/services.php
     ]
 ```
 
+After that, create your social providers in the database
+```php
+SocialProvider::create(['label' => 'Facebook', 'slug' => 'facebook']);
+SocialProvider::create(['label' => 'Google', 'slug' => 'google']);
+SocialProvider::create(['label' => 'github', 'slug' => 'Github']);
+```
+Or add rows directly
+
+You can add additional scopes and parameters to the social auth request
+```php
+SocialProvider::create([
+    'label' => 'github',
+    'slug' => 'Github',
+    'scopes' => ['foo', 'bar'],
+    'parameters' => ['foo' => 'bar']
+]);
+```
+To override default scopes
+```php
+$SocialProvider->setScopes(['foo', 'bar'], true);
+```
+
 ##### Include social buttons into your templates
 ```php
  @include('social-auth::attach') // for authenticated user to attach/detach another socials
@@ -213,7 +240,7 @@ In case if you no need any special functionality ypu can use our default control
 ##### Customize for your project
 
 ###### Custom User Model
-User model we takes from the  config('auth.users.model');
+User model we takes from the config('social-auth.models.user');
 
 ###### User Fields Mapping
 SocialAuthenticatable interface contains method ```mapSocialData``` for mapping social fields for user model

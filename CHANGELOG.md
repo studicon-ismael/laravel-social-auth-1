@@ -4,19 +4,13 @@ All Notable changes to `social-auth` will be documented in this file.
 
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## NEXT - YYYY-MM-DD
+## v1.0.1 - 2017-08-02
 
 ### Added
-- Nothing
-
-### Deprecated
-- Nothing
+- Ability to set additional scopes and parameters
+- Ability to user stateless login
+- Configuration property to set user model
+- Unit tests for events
 
 ### Fixed
-- Nothing
-
-### Removed
-- Nothing
-
-### Security
-- Nothing
+- Setting table name for SocialProvider model
