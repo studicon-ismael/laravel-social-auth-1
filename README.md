@@ -72,6 +72,11 @@ return [
          * is often just the "SocialProvider" model but you may use whatever you like.
          */
         'social' => \ZFort\SocialAuth\Models\SocialProvider::class,
+        
+        /*
+         * User model which you will use as "SocialAuthenticatable"
+         */
+        'user' => \App\User::class,
     ],
 
     'table_names' => [
@@ -169,6 +174,28 @@ File config/services.php
         'client_secret' => env('GITHUB_SECRET'),
         'redirect'      => env('GITHUB_REDIRECT')
     ]
+```
+
+After that, create your social providers in the database
+```php
+SocialProvider::create(['label' => 'Facebook', 'slug' => 'facebook']);
+SocialProvider::create(['label' => 'Google', 'slug' => 'google']);
+SocialProvider::create(['label' => 'github', 'slug' => 'Github']);
+```
+Or add rows directly
+
+You can add additional scopes and parameters to the social auth request
+```php
+SocialProvider::create([
+    'label' => 'github',
+    'slug' => 'Github',
+    'scopes' => ['foo', 'bar'],
+    'parameters' => ['foo' => 'bar']
+]);
+```
+To override default scopes
+```php
+$SocialProvider->setScopes(['foo', 'bar'], true);
 ```
 
 ##### Include social buttons into your templates
