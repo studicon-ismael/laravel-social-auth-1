@@ -23,6 +23,11 @@ return [
          * is often just the "SocialProvider" model but you may use whatever you like.
          */
         'social' => \ZFort\SocialAuth\Models\SocialProvider::class,
+
+        /*
+         * User model which you will use as "SocialAuthenticatable"
+         */
+        'user' => \App\User::class,
     ],
 
     'table_names' => [

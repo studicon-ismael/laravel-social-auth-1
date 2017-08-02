@@ -69,7 +69,7 @@ class SocialAuthController extends BaseController
         $this->socialite = $socialite;
         $this->redirectTo = config('social-auth.redirect');
 
-        $className = config('auth.providers.users.model');
+        $className = config('social-auth.models.user');
         $this->userModel = new $className;
 
         $this->middleware(function ($request, $next) {
@@ -90,7 +90,11 @@ class SocialAuthController extends BaseController
     {
         $provider = $this->socialite->driver($social->slug);
 
-        return $provider->redirect();
+        if (! empty($social->scopes)) {
+            $social->override_scopes ? $provider->setScopes($social->scopes) : $provider->scopes($social->scopes);
+        }
+
+        return empty($social->parameters) ? $provider->redirect() : $provider->with($social->parameters)->redirect();
     }
 
     /**
@@ -110,7 +114,7 @@ class SocialAuthController extends BaseController
 
         // try to get user info from social network
         try {
-            $SocialUser = $provider->user();
+            $SocialUser = $social->stateless ? $provider->stateless()->user() : $provider->user();
         } catch (Exception $e) {
             throw new SocialGetUserInfoException($social, $e->getMessage());
         }

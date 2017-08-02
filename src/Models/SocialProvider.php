@@ -12,6 +12,10 @@ use Illuminate\Database\Eloquent\Model;
  * @param string $label
  * @property string $label
  * @property string $slug
+ * @property array $scopes
+ * @property array $parameters
+ * @property bool $override_scopes
+ * @property bool $stateless
  * @property string $created_at
  * @property string $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users
@@ -27,7 +31,27 @@ class SocialProvider extends Model
     /**
      * {@inheritdoc}
      */
-    protected $fillable = ['slug', 'label'];
+    protected $fillable = ['slug', 'label', 'scopes', 'parameters', 'stateless'];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $casts = [
+        'scopes' => 'array',
+        'parameters' => 'array',
+    ];
+
+    /**
+     * SocialProvider constructor.
+     *
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->setTable(config('social-auth.table_names.social_providers'));
+    }
 
     /**
      * Get the route key for the model.
@@ -40,12 +64,23 @@ class SocialProvider extends Model
     }
 
     /**
+     * Set
+     */
+    public function setScopes(array $scopes, bool $isOverride = false)
+    {
+        $this->scopes = $scopes;
+        $this->override_scopes = $isOverride;
+
+        $this->save();
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users()
     {
         return $this->belongsToMany(
-            config('auth.providers.users.model'),
+            config('social-auth.models.user'),
             config('social-auth.table_names.user_has_social_provider')
         );
     }

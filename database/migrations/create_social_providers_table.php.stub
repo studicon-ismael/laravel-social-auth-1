@@ -15,7 +15,7 @@ class CreateSocialProvidersTable extends Migration
     {
         $table_names = config('social-auth.table_names');
         $foreign_keys = config('social-auth.foreign_keys');
-        $model_name = config('auth.providers.users.model');
+        $model_name = config('social-auth.models.user');
 
         // Get users table name
         $userModel = new $model_name;
@@ -25,6 +25,10 @@ class CreateSocialProvidersTable extends Migration
             $table->increments('id');
             $table->string('label');
             $table->string('slug')->unique();
+            $table->json('scopes')->nullable();
+            $table->json('parameters')->nullable();
+            $table->boolean('override_scopes')->default(false);
+            $table->boolean('stateless')->default(false);
             $table->timestamps();
         });
 
