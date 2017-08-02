@@ -30,6 +30,18 @@ class SocialProvider extends Model
     protected $fillable = ['slug', 'label'];
 
     /**
+     * SocialProvider constructor.
+     *
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->setTable(config('social-auth.table_names.social_providers'));
+    }
+
+    /**
      * Get the route key for the model.
      *
      * @return string
