@@ -48,7 +48,7 @@ class CacheRefreshCommand extends Command
         $providers = $this->loader->getSocialProviders();
 
         $this->info(
-            'Cache was refreshed. Current available social providers: ' .
+            'Cache was refreshed. Current available social providers: '.
             $providers->implode('label', ', ')
         );
     }

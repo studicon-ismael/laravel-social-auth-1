@@ -64,7 +64,7 @@ class SocialProvider extends Model
     }
 
     /**
-     * Set
+     * Set scopes which will be add to the social auth request.
      */
     public function setScopes(array $scopes, bool $isOverride = false)
     {
