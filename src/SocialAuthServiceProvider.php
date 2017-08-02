@@ -2,8 +2,8 @@
 
 namespace ZFort\SocialAuth;
 
-use ZFort\SocialAuth\Console\CacheRefreshCommand;
 use Illuminate\Support\ServiceProvider;
+use ZFort\SocialAuth\Console\CacheRefreshCommand;
 
 class SocialAuthServiceProvider extends ServiceProvider
 {
