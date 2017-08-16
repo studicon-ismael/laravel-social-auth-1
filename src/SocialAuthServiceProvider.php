@@ -36,7 +36,7 @@ class SocialAuthServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../resources/config/social-auth.php',
+            __DIR__.'/../config/social-auth.php',
             'social-auth'
         );
 
@@ -84,6 +84,6 @@ class SocialAuthServiceProvider extends ServiceProvider
         ], 'lang');
 
         // Routes
-        require $resource_folder.'/routes/routes.php';
+        $this->loadRoutesFrom(__DIR__.'/../routes/routes.php');
     }
 }
