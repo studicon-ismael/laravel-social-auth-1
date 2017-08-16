@@ -31,7 +31,14 @@ class SocialProvider extends Model
     /**
      * {@inheritdoc}
      */
-    protected $fillable = ['slug', 'label', 'scopes', 'parameters', 'stateless'];
+    protected $fillable = [
+        'slug',
+        'label',
+        'scopes',
+        'parameters',
+        'override_scopes',
+        'stateless',
+    ];
 
     /**
      * {@inheritdoc}

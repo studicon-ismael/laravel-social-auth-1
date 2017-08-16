@@ -177,10 +177,14 @@ File config/services.php
 ```
 
 After that, create your social providers in the database
+
+Using console command
+```bash
+php artisan social-auth:add google --label=Google+
+```
+Or creating models for example in seeder
 ```php
-SocialProvider::create(['label' => 'Facebook', 'slug' => 'facebook']);
-SocialProvider::create(['label' => 'Google', 'slug' => 'google']);
-SocialProvider::create(['label' => 'github', 'slug' => 'Github']);
+SocialProvider::create(['slug' => 'google', 'label' => 'Google+']);
 ```
 Or add rows directly
 
