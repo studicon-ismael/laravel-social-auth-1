@@ -1,5 +1,5 @@
 {
-    "name": "mad-web/social-auth",
+    "name": "mad-web/laravel-social-auth",
     "type": "library",
     "description": "Easy social auth integration with a lot of available providers",
     "keywords": [

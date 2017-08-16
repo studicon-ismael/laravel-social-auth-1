@@ -273,17 +273,17 @@ If you discover any security related issues, please email madweb.dev@gmail.com i
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-[ico-version]: https://poser.pugx.org/mad-web/social-auth/v/stable.svg?format=flat-square
-[ico-license]: https://poser.pugx.org/mad-web/social-auth/license?format=flat-square
-[ico-travis]: https://img.shields.io/travis/mad-web/social-auth/master.svg?style=flat-square
+[ico-version]: https://poser.pugx.org/mad-web/laravel-social-auth/v/stable.svg?format=flat-square
+[ico-license]: https://poser.pugx.org/mad-web/laravel-social-auth/license?format=flat-square
+[ico-travis]: https://img.shields.io/travis/mad-web/laravel-social-auth/master.svg?style=flat-square
 [ico-style]: https://styleci.io/repos/100302673/shield
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/mad-web/social-auth.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/mad-web/social-auth.svg?style=flat-square
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/mad-web/laravel-social-auth.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/mad-web/laravel-social-auth.svg?style=flat-square
 
-[link-packagist]: https://packagist.org/packages/mad-web/social-auth
-[link-travis]: https://travis-ci.org/mad-web/social-auth
+[link-packagist]: https://packagist.org/packages/mad-web/laravel-social-auth
+[link-travis]: https://travis-ci.org/mad-web/laravel-social-auth
 [link-style]: https://styleci.io/repos/100302673
-[link-code-quality]: https://scrutinizer-ci.com/g/mad-web/social-auth
-[link-downloads]: https://packagist.org/packages/mad-web/social-auth
+[link-code-quality]: https://scrutinizer-ci.com/g/mad-web/laravel-social-auth
+[link-downloads]: https://packagist.org/packages/mad-web/laravel-social-auth
 [link-author]: https://github.com/mad-web
 [link-contributors]: ../../contributors
