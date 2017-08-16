@@ -1,6 +1,6 @@
 <?php
 
-namespace ZFort\SocialAuth\Test\Utils;
+namespace MadWeb\SocialAuth\Test\Utils;
 
 use Illuminate\Foundation\Exceptions\Handler;
 

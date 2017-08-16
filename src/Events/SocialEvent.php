@@ -1,6 +1,6 @@
 <?php
 
-namespace ZFort\SocialAuth\Events;
+namespace MadWeb\SocialAuth\Events;
 
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;

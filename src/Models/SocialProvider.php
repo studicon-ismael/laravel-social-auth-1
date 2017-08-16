@@ -1,6 +1,6 @@
 <?php
 
-namespace ZFort\SocialAuth\Models;
+namespace MadWeb\SocialAuth\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,11 +19,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $created_at
  * @property string $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users
- * @method static \Illuminate\Database\Query\Builder|\ZFort\SocialAuth\Models\SocialProvider whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\ZFort\SocialAuth\Models\SocialProvider whereLabel($value)
- * @method static \Illuminate\Database\Query\Builder|\ZFort\SocialAuth\Models\SocialProvider whereSlug($value)
- * @method static \Illuminate\Database\Query\Builder|\ZFort\SocialAuth\Models\SocialProvider whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\ZFort\SocialAuth\Models\SocialProvider whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\MadWeb\SocialAuth\Models\SocialProvider whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\MadWeb\SocialAuth\Models\SocialProvider whereLabel($value)
+ * @method static \Illuminate\Database\Query\Builder|\MadWeb\SocialAuth\Models\SocialProvider whereSlug($value)
+ * @method static \Illuminate\Database\Query\Builder|\MadWeb\SocialAuth\Models\SocialProvider whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\MadWeb\SocialAuth\Models\SocialProvider whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class SocialProvider extends Model

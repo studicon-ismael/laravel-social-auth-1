@@ -1,9 +1,9 @@
 <?php
 
-namespace ZFort\SocialAuth\Console;
+namespace MadWeb\SocialAuth\Console;
 
 use Illuminate\Console\Command;
-use ZFort\SocialAuth\SocialProvidersLoader;
+use MadWeb\SocialAuth\SocialProvidersLoader;
 
 class CacheRefreshCommand extends Command
 {

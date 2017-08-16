@@ -1,6 +1,6 @@
 <?php
 
-namespace ZFort\SocialAuth\Exceptions;
+namespace MadWeb\SocialAuth\Exceptions;
 
 class SocialUserAttachException extends SocialAuthHttpException
 {

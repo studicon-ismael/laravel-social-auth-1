@@ -1,6 +1,6 @@
 <?php
 
-namespace ZFort\SocialAuth\Test;
+namespace MadWeb\SocialAuth\Test;
 
 class ControllerTestTest extends TestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace ZFort\SocialAuth\Exceptions;
+namespace MadWeb\SocialAuth\Exceptions;
 
 use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpFoundation\Response;

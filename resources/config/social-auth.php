@@ -22,7 +22,7 @@ return [
          * Eloquent model should be used to retrieve your available social providers. Of course, it
          * is often just the "SocialProvider" model but you may use whatever you like.
          */
-        'social' => \ZFort\SocialAuth\Models\SocialProvider::class,
+        'social' => \MadWeb\SocialAuth\Models\SocialProvider::class,
 
         /*
          * User model which you will use as "SocialAuthenticatable"
