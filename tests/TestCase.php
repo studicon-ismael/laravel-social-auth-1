@@ -1,11 +1,11 @@
 <?php
 
-namespace ZFort\SocialAuth\Test;
+namespace MadWeb\SocialAuth\Test;
 
 use Illuminate\Database\Schema\Blueprint;
-use ZFort\SocialAuth\Test\Utils\SocialiteMock;
+use MadWeb\SocialAuth\Test\Utils\SocialiteMock;
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use ZFort\SocialAuth\Test\Utils\TestExceptionHandler;
+use MadWeb\SocialAuth\Test\Utils\TestExceptionHandler;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 abstract class TestCase extends OrchestraTestCase
@@ -50,7 +50,7 @@ abstract class TestCase extends OrchestraTestCase
      */
     protected function getPackageProviders($app)
     {
-        return [\ZFort\SocialAuth\SocialAuthServiceProvider::class];
+        return [\MadWeb\SocialAuth\SocialAuthServiceProvider::class];
     }
 
     /**

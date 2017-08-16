@@ -1,6 +1,6 @@
 <?php
 
-namespace ZFort\SocialAuth;
+namespace MadWeb\SocialAuth;
 
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -15,7 +15,7 @@ class SocialProvidersLoader
     /**
      * @var string
      */
-    protected $cacheKey = 'zfort.social-providers';
+    protected $cacheKey = 'mad-web.social-providers';
 
     /**
      * @var Dispatcher

@@ -1,11 +1,11 @@
 <?php
 
-namespace ZFort\SocialAuth\Traits;
+namespace MadWeb\SocialAuth\Traits;
 
 use DateInterval;
 use Laravel\Socialite\Contracts\User;
-use ZFort\SocialAuth\Models\SocialProvider;
-use ZFort\SocialAuth\Events\SocialUserAuthenticated;
+use MadWeb\SocialAuth\Models\SocialProvider;
+use MadWeb\SocialAuth\Events\SocialUserAuthenticated;
 
 trait UserSocialite
 {

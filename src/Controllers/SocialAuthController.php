@@ -1,24 +1,24 @@
 <?php
 
-namespace ZFort\SocialAuth\Controllers;
+namespace MadWeb\SocialAuth\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
-use ZFort\SocialAuth\Models\SocialProvider;
-use ZFort\SocialAuth\SocialProviderManager;
+use MadWeb\SocialAuth\Models\SocialProvider;
+use MadWeb\SocialAuth\SocialProviderManager;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\RedirectsUsers;
-use ZFort\SocialAuth\Events\SocialUserDetached;
+use MadWeb\SocialAuth\Events\SocialUserDetached;
 use Laravel\Socialite\Contracts\User as SocialUser;
 use Illuminate\Routing\Controller as BaseController;
-use ZFort\SocialAuth\Events\SocialUserAuthenticated;
+use MadWeb\SocialAuth\Events\SocialUserAuthenticated;
 use Laravel\Socialite\Contracts\Factory as Socialite;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use ZFort\SocialAuth\Exceptions\SocialUserAttachException;
-use ZFort\SocialAuth\Exceptions\SocialGetUserInfoException;
+use MadWeb\SocialAuth\Exceptions\SocialUserAttachException;
+use MadWeb\SocialAuth\Exceptions\SocialGetUserInfoException;
 
 /**
  * Class SocialAuthController.
@@ -48,7 +48,7 @@ class SocialAuthController extends BaseController
     protected $socialite;
 
     /**
-     * @var \ZFort\SocialAuth\Contracts\SocialAuthenticatable|\Illuminate\Contracts\Auth\Authenticatable
+     * @var \MadWeb\SocialAuth\Contracts\SocialAuthenticatable|\Illuminate\Contracts\Auth\Authenticatable
      */
     protected $userModel;
 
@@ -168,7 +168,7 @@ class SocialAuthController extends BaseController
      */
     public function detachAccount(Request $request, SocialProvider $social)
     {
-        /** @var \ZFort\SocialAuth\Contracts\SocialAuthenticatable $User */
+        /** @var \MadWeb\SocialAuth\Contracts\SocialAuthenticatable $User */
         $User = $request->user();
         $UserSocials = $User->socials();
 

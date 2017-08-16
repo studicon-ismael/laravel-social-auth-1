@@ -1,15 +1,15 @@
 <?php
 
-namespace ZFort\SocialAuth\Test;
+namespace MadWeb\SocialAuth\Test;
 
 use Mockery;
 use Illuminate\Support\Facades\Event;
-use ZFort\SocialAuth\Models\SocialProvider;
-use ZFort\SocialAuth\SocialProviderManager;
-use ZFort\SocialAuth\Events\SocialUserCreated;
-use ZFort\SocialAuth\Events\SocialUserAttached;
-use ZFort\SocialAuth\Events\SocialUserDetached;
-use ZFort\SocialAuth\Events\SocialUserAuthenticated;
+use MadWeb\SocialAuth\Models\SocialProvider;
+use MadWeb\SocialAuth\SocialProviderManager;
+use MadWeb\SocialAuth\Events\SocialUserCreated;
+use MadWeb\SocialAuth\Events\SocialUserAttached;
+use MadWeb\SocialAuth\Events\SocialUserDetached;
+use MadWeb\SocialAuth\Events\SocialUserAuthenticated;
 
 class EventsTest extends TestCase
 {

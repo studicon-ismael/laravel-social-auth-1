@@ -1,12 +1,12 @@
 <?php
 
-namespace ZFort\SocialAuth\Test;
+namespace MadWeb\SocialAuth\Test;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
-use ZFort\SocialAuth\Traits\UserSocialite;
+use MadWeb\SocialAuth\Traits\UserSocialite;
 use Illuminate\Foundation\Auth\Access\Authorizable;
-use ZFort\SocialAuth\Contracts\SocialAuthenticatable;
+use MadWeb\SocialAuth\Contracts\SocialAuthenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 

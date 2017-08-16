@@ -1,10 +1,10 @@
 <?php
 
-namespace ZFort\SocialAuth\Test;
+namespace MadWeb\SocialAuth\Test;
 
 use DateInterval;
-use ZFort\SocialAuth\Models\SocialProvider;
-use ZFort\SocialAuth\Exceptions\SocialGetUserInfoException;
+use MadWeb\SocialAuth\Models\SocialProvider;
+use MadWeb\SocialAuth\Exceptions\SocialGetUserInfoException;
 
 class SocialAuthTest extends TestCase
 {
