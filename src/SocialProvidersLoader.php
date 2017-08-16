@@ -15,7 +15,7 @@ class SocialProvidersLoader
     /**
      * @var string
      */
-    protected $cacheKey = 'zfort.social-providers';
+    protected $cacheKey = 'mad-web.social-providers';
 
     /**
      * @var Dispatcher
