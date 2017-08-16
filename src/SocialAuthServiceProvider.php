@@ -4,6 +4,7 @@ namespace MadWeb\SocialAuth;
 
 use Illuminate\Support\ServiceProvider;
 use MadWeb\SocialAuth\Console\CacheRefreshCommand;
+use MadWeb\SocialAuth\Console\AddSocialProviderCommand;
 
 class SocialAuthServiceProvider extends ServiceProvider
 {
@@ -40,14 +41,10 @@ class SocialAuthServiceProvider extends ServiceProvider
             'social-auth'
         );
 
-        $this->app->singleton(
-            'command.social-auth.refresh',
-            function ($app) {
-                return new CacheRefreshCommand($app[SocialProvidersLoader::class]);
-            }
-        );
+        $this->app->singleton('command.social-auth.refresh', CacheRefreshCommand::class);
+        $this->app->singleton('command.social-auth.add', AddSocialProviderCommand::class);
 
-        $this->commands('command.social-auth.refresh');
+        $this->commands(['command.social-auth.refresh', 'command.social-auth.add']);
     }
 
     /**
