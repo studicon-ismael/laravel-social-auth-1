@@ -55,8 +55,6 @@ trait UserSocialite
         }
 
         $this->socials()->attach($social, $data);
-
-        event(new SocialUserAuthenticated($this, $social, $data));
     }
 
     /**

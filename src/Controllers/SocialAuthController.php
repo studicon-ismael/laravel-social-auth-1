@@ -204,20 +204,20 @@ class SocialAuthController extends BaseController
     protected function processData(Request $request, SocialProvider $social, SocialUser $socialUser)
     {
         //Checks by socialProvider identifier if user exists
-        $exist_user = $this->manager->getUserByKey($socialUser->getId());
+        $ExistUser = $this->manager->getUserByKey($socialUser->getId());
         $redirect_path = $this->redirectPath();
 
         //Checks if user exists with current socialProvider identifier, auth if does
-        if ($exist_user) {
-            $this->login($exist_user);
+        if ($ExistUser) {
+            $this->login($ExistUser);
 
             return redirect($redirect_path);
         }
 
         //Checks if account exists with socialProvider email, auth and attach current socialProvider if does
-        $exist_user = $this->userModel->where($this->userModel->getEmailField(), $socialUser->getEmail())->first();
-        if ($exist_user) {
-            $this->login($exist_user);
+        $ExistUser = $this->userModel->where($this->userModel->getEmailField(), $socialUser->getEmail())->first();
+        if ($ExistUser) {
+            $this->login($ExistUser);
 
             $this->manager->attach($request->user(), $socialUser);
 
@@ -225,8 +225,8 @@ class SocialAuthController extends BaseController
         }
 
         //If account for current socialProvider data doesn't exist - create new one
-        $new_user = $this->manager->createNewUser($this->userModel, $social, $socialUser);
-        $this->login($new_user);
+        $NewUser = $this->manager->createNewUser($this->userModel, $social, $socialUser);
+        $this->login($NewUser);
 
         return redirect($redirect_path);
     }
