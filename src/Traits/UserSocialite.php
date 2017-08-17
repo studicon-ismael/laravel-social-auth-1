@@ -5,7 +5,6 @@ namespace MadWeb\SocialAuth\Traits;
 use DateInterval;
 use Laravel\Socialite\Contracts\User;
 use MadWeb\SocialAuth\Models\SocialProvider;
-use MadWeb\SocialAuth\Events\SocialUserAuthenticated;
 
 trait UserSocialite
 {
