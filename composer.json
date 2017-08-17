@@ -50,5 +50,12 @@
     },
     "config": {
         "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MadWeb\\SocialAuth\\SocialAuthServiceProvider"
+            ]
+        }
     }
 }
