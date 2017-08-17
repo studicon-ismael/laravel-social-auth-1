@@ -84,7 +84,7 @@ class SocialProvidersLoader
     {
         $model = $this->social_model;
 
-        $ClearCacheFunction = function ($model) {
+        $ClearCacheFunction = function () {
             $this->forgetSocialProviders();
         };
 
