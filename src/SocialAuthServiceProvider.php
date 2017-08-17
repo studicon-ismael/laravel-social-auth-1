@@ -55,7 +55,7 @@ class SocialAuthServiceProvider extends ServiceProvider
         $resource_folder = __DIR__.'/../resources';
 
         $this->publishes([
-            $resource_folder.'/config/social-auth.php' => $this->app->configPath().'/social-auth.php',
+            __DIR__.'/../config/social-auth.php' => $this->app->configPath().'/social-auth.php',
         ], 'config');
 
         if (! class_exists('CreateSocialProvidersTable')) {
