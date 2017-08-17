@@ -2,7 +2,7 @@
 
 $this->app['router']->group(
     [
-        'namespace' => 'ZFort\SocialAuth\Controllers',
+        'namespace' => 'MadWeb\SocialAuth\Controllers',
         'middleware' => ['web'],
         'as' => 'social.',
     ],

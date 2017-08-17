@@ -17,20 +17,20 @@ This package give ability to
 Via Composer
 
 ``` bash
-$ composer require zfort/social-auth
+$ composer require mad-web/social-auth
 ```
 
 Now add the service provider in config/app.php file:
 ```php
 'providers' => [
     // ...
-    ZFort\SocialAuth\SocialAuthServiceProvider::class,
+    MadWeb\SocialAuth\SocialAuthServiceProvider::class,
 ];
 ```
 
 You can publish the migration with:
 ```bash
-$ php artisan vendor:publish --provider="ZFort\SocialAuth\SocialAuthServiceProvider" --tag="migrations"
+$ php artisan vendor:publish --provider="MadWeb\SocialAuth\SocialAuthServiceProvider" --tag="migrations"
 ```
 
 The package assumes that your users table name is called "users". If this is not the case you should manually edit the published migration to use your custom table name.
@@ -43,7 +43,7 @@ $ php artisan migrate
 
 You can publish the config-file with:
 ```bash
-$ php artisan vendor:publish --provider="ZFort\SocialAuth\SocialAuthServiceProvider" --tag="config"
+$ php artisan vendor:publish --provider="MadWeb\SocialAuth\SocialAuthServiceProvider" --tag="config"
 ```
 
 This is the contents of the published config/social-auth.php config file:
@@ -71,7 +71,7 @@ return [
          * Eloquent model should be used to retrieve your available social providers. Of course, it
          * is often just the "SocialProvider" model but you may use whatever you like.
          */
-        'social' => \ZFort\SocialAuth\Models\SocialProvider::class,
+        'social' => \MadWeb\SocialAuth\Models\SocialProvider::class,
         
         /*
          * User model which you will use as "SocialAuthenticatable"
@@ -130,12 +130,12 @@ return [
 
 Or you can publish and modify view templates with:
 ```bash
-$ php artisan vendor:publish --provider="ZFort\SocialAuth\SocialAuthServiceProvider" --tag="views"
+$ php artisan vendor:publish --provider="MadWeb\SocialAuth\SocialAuthServiceProvider" --tag="views"
 ```
 
 Also you can publish and modify translation file:
 ```bash
-$ php artisan vendor:publish --provider="ZFort\SocialAuth\SocialAuthServiceProvider" --tag="lang"
+$ php artisan vendor:publish --provider="MadWeb\SocialAuth\SocialAuthServiceProvider" --tag="lang"
 ```
 
 ##### Add credetials to your project
@@ -177,10 +177,14 @@ File config/services.php
 ```
 
 After that, create your social providers in the database
+
+Using console command
+```bash
+php artisan social-auth:add google --label=Google+
+```
+Or creating models for example in seeder
 ```php
-SocialProvider::create(['label' => 'Facebook', 'slug' => 'facebook']);
-SocialProvider::create(['label' => 'Google', 'slug' => 'google']);
-SocialProvider::create(['label' => 'github', 'slug' => 'Github']);
+SocialProvider::create(['slug' => 'google', 'label' => 'Google+']);
 ```
 Or add rows directly
 
@@ -214,8 +218,8 @@ Add UserSocialite trait to your User model
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use ZFort\SocialAuth\Traits\UserSocialite;
-use ZFort\SocialAuth\Contracts\SocialAuthenticatable;
+use MadWeb\SocialAuth\Traits\UserSocialite;
+use MadWeb\SocialAuth\Contracts\SocialAuthenticatable;
 
 class User extends Model implements SocialAuthenticatable
 {
@@ -262,28 +266,28 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) and [CONDUCT](CONDUCT.md) for details
 
 ## Security
 
-If you discover any security related issues, please email developer@zfort.com instead of using the issue tracker.
+If you discover any security related issues, please email madweb.dev@gmail.com instead of using the issue tracker.
 
 ## Credits
 
-- [zFort](https://zfort.com)
+- [Mad Web](https://github.com/mad-web)
 - [All Contributors](link-contributors)
 
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-[ico-version]: https://poser.pugx.org/zfort/social-auth/v/stable.svg?format=flat-square
-[ico-license]: https://poser.pugx.org/zfort/social-auth/license?format=flat-square
-[ico-travis]: https://img.shields.io/travis/zfort/social-auth/master.svg?style=flat-square
-[ico-style]: https://styleci.io/repos/33916850/shield
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/zfort/social-auth.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/zfort/social-auth.svg?style=flat-square
+[ico-version]: https://poser.pugx.org/mad-web/laravel-social-auth/v/stable.svg?format=flat-square
+[ico-license]: https://poser.pugx.org/mad-web/laravel-social-auth/license?format=flat-square
+[ico-travis]: https://img.shields.io/travis/mad-web/laravel-social-auth/master.svg?style=flat-square
+[ico-style]: https://styleci.io/repos/100302673/shield
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/mad-web/laravel-social-auth.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/mad-web/laravel-social-auth.svg?style=flat-square
 
-[link-packagist]: https://packagist.org/packages/zfort/social-auth
-[link-travis]: https://travis-ci.org/zfort/social-auth
-[link-style]: https://styleci.io/repos/86463317
-[link-code-quality]: https://scrutinizer-ci.com/g/zfort/social-auth
-[link-downloads]: https://packagist.org/packages/zfort/social-auth
-[link-author]: https://github.com/zfort
+[link-packagist]: https://packagist.org/packages/mad-web/laravel-social-auth
+[link-travis]: https://travis-ci.org/mad-web/laravel-social-auth
+[link-style]: https://styleci.io/repos/100302673
+[link-code-quality]: https://scrutinizer-ci.com/g/mad-web/laravel-social-auth
+[link-downloads]: https://packagist.org/packages/mad-web/laravel-social-auth
+[link-author]: https://github.com/mad-web
 [link-contributors]: ../../contributors

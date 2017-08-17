@@ -1,6 +1,6 @@
 <?php
 
-namespace ZFort\SocialAuth\Contracts;
+namespace MadWeb\SocialAuth\Contracts;
 
 use Laravel\Socialite\Contracts\User;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace ZFort\SocialAuth\Events;
+namespace MadWeb\SocialAuth\Events;
 
-use ZFort\SocialAuth\Contracts\SocialAuthenticatable;
+use MadWeb\SocialAuth\Contracts\SocialAuthenticatable;
 
 class SocialUserDetached extends SocialEvent
 {

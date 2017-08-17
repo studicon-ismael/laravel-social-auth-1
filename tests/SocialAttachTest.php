@@ -1,8 +1,8 @@
 <?php
 
-namespace ZFort\SocialAuth\Test;
+namespace MadWeb\SocialAuth\Test;
 
-use ZFort\SocialAuth\Models\SocialProvider;
+use MadWeb\SocialAuth\Models\SocialProvider;
 
 class SocialAttachTest extends TestCase
 {

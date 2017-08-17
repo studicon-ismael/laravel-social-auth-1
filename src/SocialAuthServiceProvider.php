@@ -1,9 +1,10 @@
 <?php
 
-namespace ZFort\SocialAuth;
+namespace MadWeb\SocialAuth;
 
 use Illuminate\Support\ServiceProvider;
-use ZFort\SocialAuth\Console\CacheRefreshCommand;
+use MadWeb\SocialAuth\Console\CacheRefreshCommand;
+use MadWeb\SocialAuth\Console\AddSocialProviderCommand;
 
 class SocialAuthServiceProvider extends ServiceProvider
 {
@@ -36,18 +37,14 @@ class SocialAuthServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../resources/config/social-auth.php',
+            __DIR__.'/../config/social-auth.php',
             'social-auth'
         );
 
-        $this->app->singleton(
-            'command.social-auth.refresh',
-            function ($app) {
-                return new CacheRefreshCommand($app[SocialProvidersLoader::class]);
-            }
-        );
+        $this->app->singleton('command.social-auth.refresh', CacheRefreshCommand::class);
+        $this->app->singleton('command.social-auth.add', AddSocialProviderCommand::class);
 
-        $this->commands('command.social-auth.refresh');
+        $this->commands(['command.social-auth.refresh', 'command.social-auth.add']);
     }
 
     /**
@@ -58,7 +55,7 @@ class SocialAuthServiceProvider extends ServiceProvider
         $resource_folder = __DIR__.'/../resources';
 
         $this->publishes([
-            $resource_folder.'/config/social-auth.php' => $this->app->configPath().'/social-auth.php',
+            __DIR__.'/../config/social-auth.php' => $this->app->configPath().'/social-auth.php',
         ], 'config');
 
         if (! class_exists('CreateSocialProvidersTable')) {
@@ -84,6 +81,6 @@ class SocialAuthServiceProvider extends ServiceProvider
         ], 'lang');
 
         // Routes
-        require $resource_folder.'/routes/routes.php';
+        $this->loadRoutesFrom(__DIR__.'/../routes/routes.php');
     }
 }

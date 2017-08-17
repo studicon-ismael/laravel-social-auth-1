@@ -1,9 +1,9 @@
 {
-    "name": "zfort/social-auth",
+    "name": "mad-web/laravel-social-auth",
     "type": "library",
     "description": "Easy social auth integration with a lot of available providers",
     "keywords": [
-        "zfort",
+        "mad-web",
         "social",
         "auth",
         "laravel",
@@ -11,13 +11,13 @@
         "login",
         "signin"
     ],
-    "homepage": "https://github.com/zfort/social-auth",
+    "homepage": "https://github.com/mad-web/social-auth",
     "license": "MIT",
     "authors": [
         {
-            "name": "zFort Group",
-            "email": "developer@zfort.com",
-            "homepage": "https://zfort.com",
+            "name": "Mad Web",
+            "email": "madweb.dev@gmail.com",
+            "homepage": "https://github.com/mad-web",
             "role": "Developer"
         }
     ],
@@ -37,12 +37,12 @@
     },
     "autoload": {
         "psr-4": {
-            "ZFort\\SocialAuth\\": "src"
+            "MadWeb\\SocialAuth\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ZFort\\SocialAuth\\Test\\": "tests"
+            "MadWeb\\SocialAuth\\Test\\": "tests"
         }
     },
     "scripts": {

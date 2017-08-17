@@ -1,9 +1,9 @@
 <?php
 
-namespace ZFort\SocialAuth\Events;
+namespace MadWeb\SocialAuth\Events;
 
 use Laravel\Socialite\Contracts\User as SocialUser;
-use ZFort\SocialAuth\Contracts\SocialAuthenticatable as Authenticatable;
+use MadWeb\SocialAuth\Contracts\SocialAuthenticatable as Authenticatable;
 
 class SocialUserAttached extends SocialEvent
 {
