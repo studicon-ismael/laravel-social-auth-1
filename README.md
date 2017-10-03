@@ -14,13 +14,19 @@ This package give ability to
 
 ## Install
 
+_*For Laravel <= 5.4*_ - Via Composer
+
+``` bash
+$ composer require mad-web/social-auth:^1.0
+```
+
 Via Composer
 
 ``` bash
 $ composer require mad-web/social-auth
 ```
 
-Now add the service provider in config/app.php file:
+_*For Laravel <= 5.4*_ - Now add the service provider in config/app.php file:
 ```php
 'providers' => [
     // ...
