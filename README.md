@@ -286,13 +286,13 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [ico-version]: https://poser.pugx.org/mad-web/laravel-social-auth/v/stable.svg?format=flat-square
 [ico-license]: https://poser.pugx.org/mad-web/laravel-social-auth/license?format=flat-square
 [ico-travis]: https://img.shields.io/travis/mad-web/laravel-social-auth/master.svg?style=flat-square
-[ico-style]: https://styleci.io/repos/100302673/shield
+[ico-style]: https://styleci.io/repos/135699653/shield
 [ico-code-quality]: https://img.shields.io/scrutinizer/g/mad-web/laravel-social-auth.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/mad-web/laravel-social-auth.svg?style=flat-square
 
 [link-packagist]: https://packagist.org/packages/mad-web/laravel-social-auth
 [link-travis]: https://travis-ci.org/mad-web/laravel-social-auth
-[link-style]: https://styleci.io/repos/100302673
+[link-style]: https://styleci.io/repos/135699653
 [link-code-quality]: https://scrutinizer-ci.com/g/mad-web/laravel-social-auth
 [link-downloads]: https://packagist.org/packages/mad-web/laravel-social-auth
 [link-author]: https://github.com/mad-web
